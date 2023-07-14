@@ -1,0 +1,26 @@
+#navbar
+{
+    background-color: black;
+    list-style: none;
+    display: flex;
+}
+
+#navbar-logo
+{
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.2rem;
+}
+
+#navbar-list
+{
+    padding-left: 20px;
+}
+
+.navbar-item
+{
+    color: white;
+    display: inline;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 1.7rem;
+    padding-right: 50px;
+}
