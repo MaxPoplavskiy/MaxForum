@@ -12,17 +12,35 @@
     font-family: 'Josefin Sans', sans-serif;
     font-weight: bold;
     font-size: 1.5rem;
+    border-style: solid;
+}
+
+.transperent-button.light
+{
+    background-color: transparent;
+    color: black;
+    border-color: black;
 }
 
 .transperent-button
 {
     background-color: transparent;
+    color: white;
+    border-color: white;
+}
+
+.login-button.light
+{
+    background-color: black;
+    color: white;
+    margin: 2rem 0 0.5rem 0;
+    border-color: black;
 }
 
 .login-button
 {
-    background-color: black;
-    color: white;
-    margin: 2rem 0 0 0;
+    background-color: white;
+    color: black;
+    margin: 2rem 0 0.5rem 0;
+    border-color: white;
 }
-

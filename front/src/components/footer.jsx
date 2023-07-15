@@ -1,6 +1,6 @@
 import React from "react";
 import "./footer.css";
-import { globalThemeContext } from "../globalThemeContext";
+import { globalThemeContext, cssLightHandle } from "../globalThemeContext";
 import { useContext } from "react";
 
 
@@ -8,8 +8,8 @@ function Footer(props)
 {
     const theme = useContext(globalThemeContext);
 
-    return <div className={"footer" + (theme === "light" ? " light" : "")}>
-        <h3 className={"footer-text" + (theme === "light" ? " light" : "")}>Maxik incorporated©2023</h3>
+    return <div className={cssLightHandle("footer", theme)}>
+        <h3 className={cssLightHandle("footer-text", theme)}>Maxik incorporated©2023</h3>
     </div>
 }
 
