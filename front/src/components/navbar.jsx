@@ -2,6 +2,7 @@ import React from "react";
 import "./navbar.css";
 import { globalThemeContext } from "../globalThemeContext";
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 
 function Navbar(props)
 {
@@ -10,13 +11,13 @@ function Navbar(props)
     return <div className={"navbar" + (theme === "light" ? " light" : "")}>
         
         <div className="navbar-list">
-            <div className={"navbar-logo" + (theme === "light" ? " light" : "")}>MaxForum</div>
-            <div className={"navbar-item" + (theme === "light" ? " light" : "")}>Posts</div>
+        <Link to="/" className={"navbar-logo" + (theme === "light" ? " light" : "")}>MaxForum</Link>
+        <Link to="/posts" className={"navbar-item" + (theme === "light" ? " light" : "")}>Posts</Link>
         </div>
         <div className="navbar-list">
-            <div className={"navbar-item" + (theme === "light" ? " light" : "")}>My Posts</div>
-            <div className={"navbar-item" + (theme === "light" ? " light" : "")}>Create</div>
-            <div className={"navbar-item" + (theme === "light" ? " light" : "")}>Account</div>
+            <Link to="/my-posts" className={"navbar-item" + (theme === "light" ? " light" : "")}>My Posts</Link>
+            <Link to="/create" className={"navbar-item" + (theme === "light" ? " light" : "")}>Create</Link>
+            <Link to="account" className={"navbar-item" + (theme === "light" ? " light" : "")}>Account</Link>
         </div>
     </div>
 }

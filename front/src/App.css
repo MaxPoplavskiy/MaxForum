@@ -5,3 +5,8 @@
     display: flex;
     flex-direction: column;
 }
+
+a:-webkit-any-link
+{
+    text-decoration: none;
+}
