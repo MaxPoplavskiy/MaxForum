@@ -3,7 +3,9 @@ import { useState } from 'react';
 import Navbar from "./components/navbar";
 import Footer from './components/footer';
 import Home from './components/home';
-import { Route, Routes } from 'react-router-dom';
+import Account from './components/account';
+import PageNotFound from './components/pagenotfound';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { globalThemeContext } from "./globalThemeContext";
 import "./themes.css";
 
@@ -18,6 +20,9 @@ function App(props) {
           
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/account" element={<Account />} />
+              <Route path="/404" element={<PageNotFound />} />
+              <Route path="*" element={<Navigate to="/404" />} />
             </Routes>
           
         <Footer />
