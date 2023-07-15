@@ -33,3 +33,12 @@
     padding-bottom: 5px;
 }
 
+@media screen and (max-width: 900px){
+    .navbar{
+        flex-direction: column;
+    }
+    .navbar-list
+    {
+        flex-direction: column;
+    }
+}
