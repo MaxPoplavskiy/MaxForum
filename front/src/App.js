@@ -10,9 +10,22 @@ import { globalThemeContext } from "./globalThemeContext";
 import "./themes.css";
 
 
+
 function App(props) {
   const [theme, setTheme] = useState("light");
   
+  function changeTheme()
+  {
+    if(theme === "light")
+    {
+      setTheme("dark");
+    }
+    else
+    {
+      setTheme("light");
+    }
+  }
+
   return (
     <globalThemeContext.Provider value={theme}>
       <div className={"App" + (theme === "light" ? " light" : "")}>
@@ -20,7 +33,7 @@ function App(props) {
           
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/account" element={<Account />} />
+              <Route path="/account" element={<Account themeButtonClick={changeTheme} />} />
               <Route path="/404" element={<PageNotFound />} />
               <Route path="*" element={<Navigate to="/404" />} />
             </Routes>

@@ -4,3 +4,10 @@
     background-color: white;
     border-color: black;
 }
+
+hr
+{
+    width: 25%;
+    border-bottom: 1px white solid;
+    margin-top: 10px;
+}

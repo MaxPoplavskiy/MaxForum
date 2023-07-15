@@ -1,0 +1,28 @@
+.button-container
+{
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+    width: 15%;
+}
+
+.button
+{
+    border-radius: 7px;
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.transperent-button
+{
+    background-color: transparent;
+}
+
+.login-button
+{
+    background-color: black;
+    color: white;
+    margin: 2rem 0 0 0;
+}
+
