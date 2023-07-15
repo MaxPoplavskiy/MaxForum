@@ -8,21 +8,26 @@ import PageNotFound from './components/pagenotfound';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { globalThemeContext } from "./globalThemeContext";
 import "./themes.css";
-
+import Cookies from "universal-cookie";
 
 
 function App(props) {
-  const [theme, setTheme] = useState("light");
+  const cookies = new Cookies();
+
+  const [theme, setTheme] = useState(cookies.get("theme"));
   
   function changeTheme()
   {
+    debugger
     if(theme === "light")
     {
       setTheme("dark");
+      cookies.set("theme", "dark");
     }
     else
     {
       setTheme("light");
+      cookies.set("theme", "light");
     }
   }
 
