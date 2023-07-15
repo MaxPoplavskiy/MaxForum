@@ -15,7 +15,7 @@ function App(props) {
   
   return (
     <globalThemeContext.Provider value={theme}>
-      <div className="App">
+      <div className={"App" + (theme === "light" ? " light" : "")}>
         <Navbar />
           
             <Routes>
