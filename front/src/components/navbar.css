@@ -1,4 +1,4 @@
-#navbar
+.navbar
 {
     background-color: black;
     display: flex;
@@ -8,7 +8,7 @@
     border-bottom: 3px white solid;
 }
 
-#navbar-logo
+.navbar-logo
 {
     font-family: 'Orbitron', sans-serif;
     font-size: 2.2rem;
@@ -32,3 +32,4 @@
     padding-right: 50px;
     padding-bottom: 5px;
 }
+

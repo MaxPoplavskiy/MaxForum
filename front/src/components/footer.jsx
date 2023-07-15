@@ -1,10 +1,15 @@
 import React from "react";
 import "./footer.css";
+import { globalThemeContext } from "../globalThemeContext";
+import { useContext } from "react";
+
 
 function Footer(props)
 {
-    return <div className="footer">
-        <h3 className="footer-text">Maxik incorporater©2023</h3>
+    const theme = useContext(globalThemeContext);
+
+    return <div className={"footer" + (theme === "light" ? " light" : "")}>
+        <h3 className={"footer-text" + (theme === "light" ? " light" : "")}>Maxik incorporater©2023</h3>
     </div>
 }
 
