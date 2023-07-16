@@ -1,5 +1,7 @@
 .card-container
 {
+    display: flex;
+    flex-direction: column;
     border-radius: 5px;
     border: 5px white solid;
 }
@@ -18,7 +20,7 @@
 .card-title-div
 {
     flex: 1;
-    margin: 0 10px;
+    margin: 10px 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -59,10 +61,10 @@
 }
 
 .more-div
-{
+{   
+    margin-top: auto;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     margin-bottom: 5px;
 }

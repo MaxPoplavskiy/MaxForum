@@ -5,6 +5,7 @@ import Footer from './components/footer';
 import Home from './components/home';
 import Account from './components/account';
 import Posts from "./components/posts"
+import CreatePost from './components/create-post';
 import PageNotFound from './components/pagenotfound';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { globalThemeContext } from "./globalThemeContext";
@@ -19,7 +20,6 @@ function App(props) {
   
   function changeTheme()
   {
-    debugger
     if(theme === "light")
     {
       setTheme("dark");
@@ -41,6 +41,7 @@ function App(props) {
               <Route path="/" element={<Home />} />
               <Route path="/account" element={<Account themeButtonClick={changeTheme} />} />
               <Route path="/posts" element={<Posts />} />
+              <Route path="/create" element={<CreatePost />} />
               <Route path="/404" element={<PageNotFound />} />
               <Route path="*" element={<Navigate to="/404" />} />
             </Routes>
