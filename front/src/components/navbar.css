@@ -41,4 +41,12 @@
     {
         flex-direction: column;
     }
+    .navbar-item
+    {
+        display: none;
+    }
+    .navbar:hover .navbar-item
+    {
+        display: block;
+    }
 }
