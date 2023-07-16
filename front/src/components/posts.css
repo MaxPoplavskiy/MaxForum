@@ -1,0 +1,23 @@
+.posts-content
+{
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 2rem;
+}
+
+.posts-container
+{
+    width: 60%;
+    display: grid;
+    gap: 15px;
+    grid-template-columns: 50% 50%;
+}
+
+@media screen and (max-width: 900px) {
+    .posts-container
+    {
+        grid-template-columns: 100%;
+    }
+}
