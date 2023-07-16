@@ -14,6 +14,12 @@
     border-color: black;
 }
 
+.thick-h2
+{
+    width: 100%;
+    border-bottom: 3px black solid;
+}
+
 hr
 {
     width: 25%;
@@ -21,3 +27,25 @@ hr
     margin-top: 10px;
 }
 
+.button
+{
+    border-radius: 7px;
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: bold;
+    font-size: 1.5rem;
+    border-style: solid;
+}
+
+.transperent-button.light
+{
+    background-color: transparent;
+    color: black;
+    border-color: black;
+}
+
+.transperent-button
+{
+    background-color: transparent;
+    color: white;
+    border-color: white;
+}   
