@@ -9,17 +9,24 @@
 
 .data-forms-container
 {
-    width: 50%;
-    height: 50vh;
+    width: 100%;
+    min-height: 50vh;
     display: flex;
     align-items: stretch;
 }
 
-@media screen and (max-width: 900px){
-    .data-forms-container
-    {
-        flex-direction: column;
-    }
+.create-forms-container
+{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+.button-create-container
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .img-form-container
@@ -51,19 +58,21 @@ input[type="file"] {
     display: none;
 }
 
-.custom-file-upload {
-    border: 1px solid #ccc;
-    display: inline-block;
-    padding: 6px 12px;
-    cursor: pointer;
-}
-
 .img-upload-div
 {
     display: flex;
+    height: 100%;
     justify-content: center;
     align-items: center;
+}
+
+.img-upload
+{
     height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .title-input
@@ -102,4 +111,16 @@ input[type="file"] {
 .content-input.light
 {
     border: 2px black solid;
+}
+
+.submit-button
+{
+    margin: 0 10px;
+}
+
+@media screen and (max-width: 900px){
+    .data-forms-container
+    {
+        flex-direction: column;
+    }
 }

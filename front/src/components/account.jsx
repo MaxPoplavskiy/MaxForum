@@ -12,7 +12,7 @@ function Account(props)
         <div className={cssLightHandle("button-container", theme)}>
             <button className={cssLightHandle("button transperent-button", theme)} onClick={props.themeButtonClick}>Change theme</button>
             <hr className={cssLightHandle("", theme)} />
-            <button className={cssLightHandle("button login-button", theme)}>Login</button>
+            <button className={cssLightHandle("button filled-button", theme)}>Login</button>
             <button className={cssLightHandle("button transperent-button", theme)}>Register</button>
         </div>
     </div>
