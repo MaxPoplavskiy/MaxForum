@@ -35,6 +35,7 @@ hr
     font-weight: bold;
     font-size: 1.5rem;
     border-style: solid;
+    text-align: center;
 }
 
 .transperent-button.light

@@ -1,0 +1,57 @@
+.auth-container
+{
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    border: 3px white solid;
+    border-radius: 10px;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+#auth-title
+{
+    font-size: 3rem;
+    margin-bottom: 35px;
+}
+
+.auth-inputs-container
+{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+
+.authform-input
+{
+    font-family: 'Josefin Sans', 'Montserrat', sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 15px 0;
+    background-color: black;
+    border: none;
+    border-bottom: 1px white solid;
+    color: white;
+}
+
+.authform-input:focus
+{
+    outline: none;
+}
+
+.authform-input::placeholder
+{
+    color: rgb(255 255 255 / 0.5);
+    font-weight: 600;
+}
+
+.authform-input.light::placeholder
+{
+    color: rgb(0 0 0 / 0.5);
+}
+
+#authform-submit-btn
+{
+    margin: 25px 0 10px 0;
+}
