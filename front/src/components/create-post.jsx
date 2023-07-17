@@ -1,11 +1,18 @@
 import React from "react";
 import "./create-post.css";
 import { globalThemeContext, cssLightHandle } from "../globalThemeContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 
 function CreatePost(props)
 {
+    const [image, setImage] = useState(null);
+
+    function fileUpload(event)
+    {
+        setImage(URL.createObjectURL(event.target.files[0]));
+    }
+
     const theme = useContext(globalThemeContext);
 
     return <div className={cssLightHandle("create-menu", theme)}>
@@ -14,11 +21,12 @@ function CreatePost(props)
             <div className="data-forms-container">
                 <div className="img-form-container">
                     <h2 className={cssLightHandle("title-form", theme)}>Image<hr className={cssLightHandle("thick-h2", theme)} /></h2>
+                    {image ? <div className="img-preview-div"><img src={image} className={cssLightHandle("img-preview", theme)} /></div>: ""}
                     <div className={cssLightHandle("button transperent-button img-upload-div", theme)}>
-                    <label for="file-upload" class={cssLightHandle("img-upload", theme)}>
+                    <label htmlFor="file-upload" className={cssLightHandle("img-upload", theme)}>
                         <div>Upload Image</div>
                     </label>
-                    <input id="file-upload" type="file" />
+                    <input id="file-upload" type="file" onChange={fileUpload} />
                     </div>
                 </div>
                 <div className="text-form-container">
