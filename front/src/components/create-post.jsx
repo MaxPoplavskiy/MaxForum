@@ -26,7 +26,7 @@ function CreatePost(props)
                     <label htmlFor="file-upload" className={cssLightHandle("img-upload", theme)}>
                         <div>Upload Image</div>
                     </label>
-                    <input id="file-upload" type="file" onChange={fileUpload} />
+                    <input id="file-upload" type="file" onChange={fileUpload} accept="image/jpg,image/jpeg,image/png" />
                     </div>
                 </div>
                 <div className="text-form-container">
