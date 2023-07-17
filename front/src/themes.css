@@ -7,6 +7,12 @@
     margin-bottom: 10px;
 }
 
+.thick-h2
+{
+    width: 100%;
+    border-bottom: 3px white solid;
+}
+
 .light
 {
     color: black;
@@ -14,11 +20,6 @@
     border-color: black;
 }
 
-.thick-h2
-{
-    width: 100%;
-    border-bottom: 3px black solid;
-}
 
 hr
 {
