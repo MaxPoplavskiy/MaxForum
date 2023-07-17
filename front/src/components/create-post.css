@@ -79,6 +79,9 @@ input[type="file"] {
 
 .title-input
 {
+    font-family: 'Josefin Sans', 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 1.5rem;
     background-color: black;
     color: white;
     border: 2px white solid;
@@ -98,6 +101,9 @@ input[type="file"] {
 
 .content-input
 {
+    font-family: 'Josefin Sans', 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 1rem;
     resize: none;
     border-radius: 5px;
     border: 2px white solid;
