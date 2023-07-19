@@ -42,6 +42,7 @@
 {
     font-family: 'Josefin Sans', 'Montserrat', sans-serif;
     font-size: 1.4rem;
+    font-weight: 300;
     color: white;
 }
 
@@ -77,6 +78,9 @@
 {
     color: white;
     background-color: black;
+    font-family: 'Josefin Sans', 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 1rem;
     resize: none;
     width: 100%;
     border: none;

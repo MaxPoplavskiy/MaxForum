@@ -37,7 +37,7 @@ function AuthForm(props)
         setSecondPassword(event.target.value);
     }
 
-    return <div className={cssLightHandle("content", theme)}>
+    return <div className={cssLightHandle("center-content", theme)}>
         <div className={cssLightHandle("auth-container", theme)}>
             <div><h1 id="auth-title" className={cssLightHandle("title", theme)}>{props.title}</h1></div>
             <div className={cssLightHandle("auth-inputs-container", theme)}>
