@@ -13,6 +13,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { globalThemeContext } from "./globalThemeContext";
 import "./themes.css";
 import Cookies from "universal-cookie";
+import { SnackbarProvider, MaterialDesignContent  } from 'notistack'
 
 
 function App(props) {
@@ -20,6 +21,7 @@ function App(props) {
 
   const [theme, setTheme] = useState(cookies.get("theme"));
   
+
   function changeTheme()
   {
     if(theme === "light")
@@ -37,6 +39,7 @@ function App(props) {
   return (
     <globalThemeContext.Provider value={theme}>
       <div className={"App" + (theme === "light" ? " light" : "")}>
+        <SnackbarProvider />
         <Navbar />
           
             <Routes>
