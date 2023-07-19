@@ -8,7 +8,7 @@ function Account(props)
 {
     const theme = useContext(globalThemeContext);
 
-    return <div className={cssLightHandle("content", theme)}>
+    return <div className={cssLightHandle("center-content", theme)}>
         <div className={cssLightHandle("button-container", theme)}>
             <button className={cssLightHandle("button transperent-button", theme)} onClick={props.themeButtonClick}>Change theme</button>
             <hr className={cssLightHandle("", theme)} />

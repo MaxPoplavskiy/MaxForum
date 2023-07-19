@@ -7,6 +7,7 @@ import Account from './components/account';
 import Posts from "./components/posts"
 import CreatePost from './components/create-post';
 import AuthForm from './components/authform';
+import Post from './components/post';
 import PageNotFound from './components/pagenotfound';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { globalThemeContext } from "./globalThemeContext";
@@ -42,6 +43,7 @@ function App(props) {
               <Route path="/" element={<Home />} />
               <Route path="/account" element={<Account themeButtonClick={changeTheme} />} />
               <Route path="/posts" element={<Posts />} />
+              <Route path="/posts/:postName" element={<Post />} />
               <Route path="/my-posts" element={<Posts type="user-posts" />} />
               <Route path="/create" element={<CreatePost />} />
               <Route path="/login" element={<AuthForm title="Login" />} />

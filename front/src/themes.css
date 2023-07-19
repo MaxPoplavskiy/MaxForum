@@ -13,13 +13,6 @@
     border-bottom: 3px white solid;
 }
 
-.light
-{
-    color: black;
-    background-color: white;
-    border-color: black;
-}
-
 
 hr
 {
@@ -66,4 +59,19 @@ hr
     color: black;
     margin: 2rem 0 0.5rem 0;
     border-color: white;
+}
+
+.vertical-hr
+{
+    border: none;
+    border-left: 3px white solid;
+    height: 100%;
+    margin: 0;
+}
+
+.light
+{
+    color: black;
+    background-color: white;
+    border-color: black;
 }

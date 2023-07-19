@@ -101,6 +101,7 @@ input[type="file"] {
 
 .content-input
 {
+    min-height: 200px;
     font-family: 'Josefin Sans', 'Montserrat', sans-serif;
     font-weight: bold;
     font-size: 1rem;
