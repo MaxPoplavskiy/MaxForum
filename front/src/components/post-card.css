@@ -49,6 +49,26 @@
     margin: 0 0 3px;
 }
 
+.hr-more
+{
+    margin: 0 0 3px;
+    width: 30%;
+}
+
+.btn-delete-card
+{
+    background-color: transparent;
+    border: none;
+    display: block;
+    margin-left: auto;
+    width: 50px;
+}
+
+.img-delete
+{
+    width: 100%;
+}
+
 .card-description
 {
     color: white;
@@ -73,4 +93,11 @@
 {
     color: white;
     font-family: 'Orbitron', sans-serif;
+}
+
+.lowerbody-card
+{
+    display: grid;
+    grid-template-columns: 30% 40% 30%;
+    justify-content: space-between;
 }

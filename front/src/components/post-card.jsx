@@ -20,9 +20,15 @@ function PostCard(props)
         <div>
             <p className={cssLightHandle("card-description", theme)}>{props.description}</p>
         </div>
-        <div className="more-div">
-            <Link className={cssLightHandle("more-link", theme)}>More</Link>
-            <hr className={cssLightHandle("hr-card-title", theme)} />
+        <div className="lowerbody-card">
+            <div></div>
+            <div className="more-div">
+                <Link className={cssLightHandle("more-link", theme)}>More</Link>
+                <hr className={cssLightHandle("hr-more", theme)} />
+            </div>
+            <div>
+                {props.type === "user-card" ? <button className="btn-delete-card"><img className="img-delete" src={theme === "light" ? "trashcan-black.png" : "trashcan-white.png"} /></button> : ""}
+            </div>
         </div>
     </div>
 }

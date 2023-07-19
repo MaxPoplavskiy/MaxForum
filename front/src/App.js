@@ -42,6 +42,7 @@ function App(props) {
               <Route path="/" element={<Home />} />
               <Route path="/account" element={<Account themeButtonClick={changeTheme} />} />
               <Route path="/posts" element={<Posts />} />
+              <Route path="/my-posts" element={<Posts type="user-posts" />} />
               <Route path="/create" element={<CreatePost />} />
               <Route path="/login" element={<AuthForm title="Login" />} />
               <Route path="/register" element={<AuthForm title="Register" />} />
