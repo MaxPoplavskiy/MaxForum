@@ -1,0 +1,31 @@
+.comment-container
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-upperbody
+{
+    display: flex;
+    justify-content: space-between;
+}
+
+.comment-title
+{
+    color: white;
+    font-family: 'Orbitron', "Tektur", sans-serif;
+    font-size: 2rem;
+    margin: 0;
+}
+
+.comment-timestamp
+{
+    font-family: 'Orbitron', "Tektur", sans-serif;
+    color: white;
+}
+
+.comment-content
+{
+    color: white;
+    font-family: 'Josefin Sans', 'Montserrat', sans-serif;
+}

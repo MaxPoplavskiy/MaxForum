@@ -2,7 +2,7 @@ import React from "react";
 import "./post.css";
 import { globalThemeContext, cssLightHandle } from "../globalThemeContext";
 import { useContext } from "react";
-
+import Comment from "./comment";
 
 function Post(props)
 {
@@ -30,7 +30,6 @@ function Post(props)
                         <textarea type="text" className={cssLightHandle("comment-input", theme)} ></textarea>
                         <button className="post-comment-btn"><img className="post-comment-btn-img" src={theme === "light" ? "/bubble_chat_black.png" : "/bubble_chat_white.png" } /></button>
                     </div>
-                    
                 </div>
         </div>
     </div>
