@@ -19,7 +19,6 @@ function AuthForm(props)
 
     function submitButton(event)
     {
-        debugger
         console.log(window.location.href);
         axios.post(window.location.href, {username: email, password: firstPassword})
         .then((response) => {
@@ -32,6 +31,10 @@ function AuthForm(props)
                 enqueueSnackbar(response.data, { variant: "error", autoHideDuration: 1000 });
             }
             checkAuthStatus();
+        })
+        .catch((err) =>
+        {
+            enqueueSnackbar(err, { variant: "error", autoHideDuration: 1000 });
         });
     }
 
