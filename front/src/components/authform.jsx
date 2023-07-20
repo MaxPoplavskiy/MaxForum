@@ -18,6 +18,7 @@ function AuthForm(props)
 
     function submitButton(event)
     {
+        debugger
         console.log(window.location.href);
         axios.post(window.location.href, {username: email, password: firstPassword})
         .then((response) => {

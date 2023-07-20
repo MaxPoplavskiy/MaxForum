@@ -11,15 +11,30 @@ import Post from './components/post';
 import PageNotFound from './components/pagenotfound';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { globalThemeContext } from "./globalThemeContext";
+import { authStatusContext } from "./authStatusContext";
 import "./themes.css";
 import Cookies from "universal-cookie";
 import { SnackbarProvider, MaterialDesignContent  } from 'notistack'
+import axios from 'axios';
 
-
+ 
 function App(props) {
   const cookies = new Cookies();
 
+  function checkAuthStatus()
+  {
+      axios.post("http://localhost:3000/logged_in").then((response) =>
+      {
+        console.log(response.data);
+        setAuthStatus(response.data);
+      });
+  }
+
   const [theme, setTheme] = useState(cookies.get("theme"));
+
+  const [authStatus, setAuthStatus] = useState(false);
+  checkAuthStatus();
+  setInterval(checkAuthStatus, 1000);
   
 
   function changeTheme()
@@ -37,6 +52,7 @@ function App(props) {
   }
 
   return (
+    <authStatusContext.Provider value={authStatus}>
     <globalThemeContext.Provider value={theme}>
       <div className={"App" + (theme === "light" ? " light" : "")}>
         <SnackbarProvider />
@@ -58,6 +74,7 @@ function App(props) {
         <Footer />
       </div>
     </globalThemeContext.Provider>
+    </authStatusContext.Provider>
   );
 }
 
