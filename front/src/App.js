@@ -14,10 +14,9 @@ import { globalThemeContext } from "./globalThemeContext";
 import { authStatusContext } from "./authStatusContext";
 import "./themes.css";
 import Cookies from "universal-cookie";
-import { SnackbarProvider, MaterialDesignContent  } from 'notistack'
+import { SnackbarProvider } from 'notistack'
 import axios from 'axios';
 
- 
 function App(props) {
   const cookies = new Cookies();
 
@@ -72,10 +71,10 @@ function App(props) {
               <Route path="/account" element={<Account themeButtonClick={changeTheme} />} />
               <Route path="/posts" element={<Posts />} />
               <Route path="/posts/:postName" element={<Post />} />
-              <Route path="/my-posts" onEnter={requireAuth} element={<Posts type="user-posts" />} />
-              <Route path="/create" onEnter={requireAuth} element={<CreatePost />} />
-              <Route path="/login" element={<AuthForm title="Login" />} />
-              <Route path="/register" element={<AuthForm title="Register" />} />
+              <Route  path="/my-posts" element={authStatus ? <Posts type="user-posts" /> : <Navigate to="/account" />} />
+              <Route  path="/create" element={authStatus ? <CreatePost /> : <Navigate to="/account" />} />
+              <Route path="/login" element={!authStatus ? <AuthForm title="Login" /> : <Navigate to="/account" />} />
+              <Route path="/register" element={!authStatus ? <AuthForm title="Register" /> : <Navigate to="/account" />} />
               <Route path="/404" element={<PageNotFound />} />
               <Route path="*" element={<Navigate to="/404" />} />
             </Routes>
