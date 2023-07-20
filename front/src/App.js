@@ -34,7 +34,6 @@ function App(props) {
 
   const [authStatus, setAuthStatus] = useState(false);
   checkAuthStatus();
-  setInterval(checkAuthStatus, 1000);
   
 
   function changeTheme()
@@ -51,8 +50,18 @@ function App(props) {
     }
   }
 
+  function requireAuth(nextState, replace, next) {
+    if (!authStatus) {
+      replace({
+        pathname: "/login",
+        state: {nextPathname: nextState.location.pathname}
+      });
+    }
+    next();
+  }
+
   return (
-    <authStatusContext.Provider value={authStatus}>
+    <authStatusContext.Provider value={[authStatus, checkAuthStatus]}>
     <globalThemeContext.Provider value={theme}>
       <div className={"App" + (theme === "light" ? " light" : "")}>
         <SnackbarProvider />
@@ -63,8 +72,8 @@ function App(props) {
               <Route path="/account" element={<Account themeButtonClick={changeTheme} />} />
               <Route path="/posts" element={<Posts />} />
               <Route path="/posts/:postName" element={<Post />} />
-              <Route path="/my-posts" element={<Posts type="user-posts" />} />
-              <Route path="/create" element={<CreatePost />} />
+              <Route path="/my-posts" onEnter={requireAuth} element={<Posts type="user-posts" />} />
+              <Route path="/create" onEnter={requireAuth} element={<CreatePost />} />
               <Route path="/login" element={<AuthForm title="Login" />} />
               <Route path="/register" element={<AuthForm title="Register" />} />
               <Route path="/404" element={<PageNotFound />} />

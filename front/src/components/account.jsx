@@ -4,12 +4,22 @@ import { globalThemeContext, cssLightHandle } from "../globalThemeContext";
 import { authStatusContext } from "../authStatusContext";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { logOut } from "../authStatusContext";
+import axios from "axios";
+
 
 function Account(props)
 {
     const theme = useContext(globalThemeContext);
-    const authStatus = useContext(authStatusContext);
+    const [authStatus, checkAuthStatus] = useContext(authStatusContext);
+
+    function logOut()
+    {
+        axios.post("http://localhost:3000/logout").then((response) =>
+        {
+            checkAuthStatus();
+            console.log(response);
+        });
+    }
 
     return <div className={cssLightHandle("center-content", theme)}>
         <div className={cssLightHandle("button-container", theme)}>

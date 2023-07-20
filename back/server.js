@@ -135,7 +135,13 @@ app.post("/logged_in", (req, res) =>
 
 app.post("/logout", (req, res) =>
 {
-  req.logout();
+  req.logout((err) =>
+  {
+    if(err)
+    {
+      console.log(err);
+    }
+  });
   res.status(200);
   res.send("success");
 });

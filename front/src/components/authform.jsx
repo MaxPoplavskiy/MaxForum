@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./authform.css";
 import { globalThemeContext, cssLightHandle } from "../globalThemeContext";
+import { authStatusContext } from "../authStatusContext";
 import { useContext } from "react";
 import axios from "axios";
 import { enqueueSnackbar } from 'notistack'
@@ -14,7 +15,7 @@ function AuthForm(props)
     const [firstPassword, setFirstPassword] = useState("");
     const [secondPassword, setSecondPassword] = useState("");
     const navigate = useNavigate();
-    
+    const [authStatus, checkAuthStatus] = useContext(authStatusContext);
 
     function submitButton(event)
     {
@@ -30,6 +31,7 @@ function AuthForm(props)
             {
                 enqueueSnackbar(response.data, { variant: "error", autoHideDuration: 1000 });
             }
+            checkAuthStatus();
         });
     }
 
