@@ -5,7 +5,8 @@ const mongoose = require("mongoose");
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
-
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 passport.serializeUser(function(user, cb) {
   process.nextTick(function() {
@@ -90,33 +91,41 @@ app.post('/login', passport.authenticate('local'));
 
 app.post("/register", (req, res) =>
 {
-  console.log(req.body);
-  const user = new User({
-    username: req.body.username,
-    password: req.body.password,
-  });
+  bcrypt.hash(req.body.password, saltRounds)
+    .then((hash) => {
+      const user = new User({
+        username: req.body.username,
+        password: hash,
+      });
 
-  user.save()
-  .then(() =>
-  {
-      res.status(200);
-      res.send("success");
-  })
-  .catch((err) => 
-  {
-    if(err.code === 11000)
-    {
-      res.status(200);
-      res.send("email taken");
-    }
-    else
-    {
-      res.send(err);
-    }
-  });
+      user.save()
+      .then(() =>
+      {
+          res.status(200);
+          res.send("success");
+      })
+      .catch((err) => 
+      {
+        if(err.code === 11000)
+        {
+          res.status(200);
+          res.send("email taken");
+        }
+        else
+        {
+          res.send(err);
+        }
+        req.login(user,(err) => {
+          console.log(err);
+        })
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
-  req.login(user,(err) => {
-})});
+  
+});
 
 
 
