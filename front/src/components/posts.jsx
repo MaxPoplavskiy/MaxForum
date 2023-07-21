@@ -4,9 +4,12 @@ import { globalThemeContext, cssLightHandle } from "../globalThemeContext";
 import { useContext, useEffect } from "react";
 import PostCard from "./post-card";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 function Posts(props)
 {
+    const { userId, postName } = useParams();
+
     const theme = useContext(globalThemeContext);
     const [posts, setPosts] = useState([]);
 
@@ -19,7 +22,7 @@ function Posts(props)
             setPosts(response.data);
             console.log(response.data);
         });
-    }, []);
+    }, [userId, postName]);
 
     function createPostCard(post)
     {

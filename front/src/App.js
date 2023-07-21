@@ -75,8 +75,8 @@ function App(props) {
               <Route path="/account" element={<Account themeButtonClick={changeTheme} />} />
               <Route path="/posts" element={<Posts />} />
               <Route path="/posts/:postName" element={<Post />} />
-              <Route path="/my-posts/:userId" element={authStatus ? <Posts type="user-posts" /> : <Navigate to="/account" />} />
-              <Route path="/my-posts/" element={authStatus ? <Navigate to={"/my-posts/" + username} /> : <Navigate to="/account" />} />
+              <Route path="/my-posts/:userId" key={'single'} element={authStatus ? <Posts type="user-posts" /> : <Navigate to="/account" />} />
+              <Route path="/my-posts/" key={'all'} element={authStatus ? <Navigate to={"/my-posts/" + username} /> : <Navigate to="/account" />} />
               <Route path="/create" element={authStatus ? <CreatePost /> : <Navigate to="/account" />} />
               <Route path="/login" element={!authStatus ? <AuthForm title="Login" /> : <Navigate to="/account" />} />
               <Route path="/register" element={!authStatus ? <AuthForm title="Register" /> : <Navigate to="/account" />} />

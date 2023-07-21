@@ -104,15 +104,15 @@ app.get("/my-posts/:userId", (req, res) =>
         .then((posts) =>
         {
           const response = [];
-          for(post of posts)
+          for(const post of posts)
           {
             if(post.image)
             {
-              response.push({...post, img: post.image.data.toString("base64")});
+              response.push({title: post.title, content: post.content, date: post.date, img: post.image.data.toString("base64")});
             }
             else
             {
-              response.push({...post});
+              response.push({title: post.title, content: post.content, date: post.date});
             }
           }
 
