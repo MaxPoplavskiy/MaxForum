@@ -1,26 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import "./posts.css";
 import { globalThemeContext, cssLightHandle } from "../globalThemeContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import PostCard from "./post-card";
+import axios from "axios";
 
 function Posts(props)
 {
     const theme = useContext(globalThemeContext);
+    const [posts, setPosts] = useState([]);
 
     const PostCardsType = props.type === "user-posts" ? "user-card" : "";
     const title = props.type === "user-posts" ? "My Posts" : "Posts";
 
+    useEffect(() => {
+        axios.get(window.location.href)
+        .then((response) => {
+            setPosts(response.data);
+            console.log(response.data);
+        });
+    }, []);
+
+    function createPostCard(post)
+    {
+        return <PostCard type={PostCardsType} imgSrc={post.img} title={post.title} description={post.content} />
+    }
+
     return <div className={cssLightHandle("posts-content", theme)}>
         <h1 className={cssLightHandle("title", theme)}>{title}<hr className={cssLightHandle("", theme)} /></h1>
         <div className="posts-container">
-        <PostCard type={PostCardsType} imgSrc="test.png" title="weaver" description="Weaver is known as a highly mobile and elusive hero, belonging to the Agility attribute. His abilities and unique mechanics make him a popular pick for players who enjoy playing a slippery, hard-to-catch hero capable of dealing significant damage." />
-        <PostCard type={PostCardsType} imgSrc="test.png" title="weaver" description="Weaver is known as a highly mobile and elusive hero, belonging to the Agility attribute. His abilities and unique mechanics make him a popular pick for players who enjoy playing a slippery, hard-to-catch hero capable of dealing significant damage." />
-        <PostCard type={PostCardsType} imgSrc="test.png" title="weaver" description="Weaver is known as a highly mobile and elusive hero, belonging to the Agility attribute. His abilities and unique mechanics make him a popular pick for players who enjoy playing a slippery, hard-to-catch hero capable of dealing significant damage." />
-        <PostCard type={PostCardsType} imgSrc="test.png" title="weaver" description="Weaver is known as a highly mobile and elusive hero, belonging to the Agility attribute. His abilities and unique mechanics make him a popular pick for players who enjoy playing a slippery, hard-to-catch hero capable of dealing significant damage." />
-        <PostCard type={PostCardsType} imgSrc="test.png" title="weaver" description="Weaver is known as a highly mobile and elusive hero, belonging to the Agility attribute. His abilities and unique mechanics make him a popular pick for players who enjoy playing a slippery, hard-to-catch hero capable of dealing significant damage." />
-        <PostCard type={PostCardsType} title="weaver" description="Weaver is known as a highly mobile and elusive hero, belonging to the Agility attribute. His abilities and unique mechanics make him a popular pick for players who enjoy playing a slippery, hard-to-catch hero capable of dealing significant damage." />
-        <PostCard type={PostCardsType} imgSrc="test.png" title="weaver" description="Weaver is known as a highly mobile and elusive hero, belonging to the Agility attribute. His abilities and unique mechanics make him a popular pick for players who enjoy playing a slippery, hard-to-catch hero capable of dealing significant damage." />
+        {posts.map(createPostCard)}
         </div>
     </div>
 }

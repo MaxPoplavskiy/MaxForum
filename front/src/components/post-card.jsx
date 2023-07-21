@@ -11,7 +11,7 @@ function PostCard(props)
 
     return <div className={cssLightHandle("card-container", theme)}>
         <div className={cssLightHandle("upperbody-card", theme)}>
-            {props.imgSrc ? <div className={cssLightHandle("card-img-div", theme)}><img src={props.imgSrc} className={cssLightHandle("card-img", theme)} /></div> : ""} 
+            {props.imgSrc ? <div className={cssLightHandle("card-img-div", theme)}><img src={"data:image/png;charset=utf-8;base64,"+props.imgSrc}  className={cssLightHandle("card-img", theme)} /></div> : ""} 
             <div className={cssLightHandle("card-title-div", theme)}>
                 <h2 className={cssLightHandle("card-title", theme)}>{props.title}</h2>
                 <hr className={cssLightHandle("hr-card-title", theme)} />

@@ -8,6 +8,8 @@ function Post(props)
 {
     const theme = useContext(globalThemeContext);
 
+    
+
     return <div className="post-container">
         <div className="post-grid">
                 <div className="post-img-container">

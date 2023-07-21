@@ -20,7 +20,8 @@ const postSchema = new mongoose.Schema({
         required: [true, "content is required"]
     },
     image: {
-        type: Buffer,
+        data: Buffer,
+        contentType: String,
     },
 }); 
 

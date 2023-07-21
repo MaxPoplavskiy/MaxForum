@@ -20,20 +20,24 @@ import axios from 'axios';
 function App(props) {
   const cookies = new Cookies();
 
+
   function checkAuthStatus()
   {
-      axios.post("http://localhost:3000/logged_in").then((response) =>
-      {
-        console.log(response.data);
-        setAuthStatus(response.data);
-      });
+    axios.post("http://localhost:3000/logged_in")
+    .then((response) => {
+      setAuthStatus(response.data.status);
+      cookies.set("last-login-status", response.data.status);
+      setUsername(response.data.username);
+    });
   }
+  
 
   const [theme, setTheme] = useState(cookies.get("theme"));
+  const [username, setUsername] = useState("");
 
-  const [authStatus, setAuthStatus] = useState(false);
+
+  const [authStatus, setAuthStatus] = useState(cookies.get("last-login-status"));
   checkAuthStatus();
-  
 
   function changeTheme()
   {
@@ -64,15 +68,16 @@ function App(props) {
     <globalThemeContext.Provider value={theme}>
       <div className={"App" + (theme === "light" ? " light" : "")}>
         <SnackbarProvider />
-        <Navbar />
+        <Navbar username={username} />
           
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/account" element={<Account themeButtonClick={changeTheme} />} />
               <Route path="/posts" element={<Posts />} />
               <Route path="/posts/:postName" element={<Post />} />
-              <Route  path="/my-posts" element={authStatus ? <Posts type="user-posts" /> : <Navigate to="/account" />} />
-              <Route  path="/create" element={authStatus ? <CreatePost /> : <Navigate to="/account" />} />
+              <Route path="/my-posts/:userId" element={authStatus ? <Posts type="user-posts" /> : <Navigate to="/account" />} />
+              <Route path="/my-posts/" element={authStatus ? <Navigate to={"/my-posts/" + username} /> : <Navigate to="/account" />} />
+              <Route path="/create" element={authStatus ? <CreatePost /> : <Navigate to="/account" />} />
               <Route path="/login" element={!authStatus ? <AuthForm title="Login" /> : <Navigate to="/account" />} />
               <Route path="/register" element={!authStatus ? <AuthForm title="Register" /> : <Navigate to="/account" />} />
               <Route path="/404" element={<PageNotFound />} />

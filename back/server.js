@@ -10,6 +10,8 @@ const Post = require("./src/model/post.jsx");
 const multer = require('multer');
 const fs = require("fs");
 const path = require('path');
+const post = require("./src/model/post.jsx");
+
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -63,6 +65,67 @@ app.use(passport.authenticate('session'));
 
 const routes = ["/", "/posts", "/my-posts", "/create", "/account", "/login", "/register"]
 
+app.get("/posts", (req, res) =>
+{
+  if(true)
+  {
+    Post.find({})
+    .then((posts) =>
+    {
+      const response = [];
+      for(const post of posts)
+      {
+        if(post.image)
+        {
+          response.push({title: post.title, content: post.content, date: post.date, img: post.image.data.toString("base64")});
+        }
+        else
+        {
+          response.push({title: post.title, content: post.content, date: post.date});
+        }
+      }
+
+      res.json(response);
+    })
+  }
+  else
+  {
+    res.sendFile(__dirname+"/public/index.html");
+  }
+});
+
+app.get("/my-posts/:userId", (req, res) =>
+{
+    if(req.isAuthenticated())
+    {
+      if(req.params.userId === req.user.username)
+      {
+        Post.find({author: req.user.username})
+        .then((posts) =>
+        {
+          const response = [];
+          for(post of posts)
+          {
+            if(post.image)
+            {
+              response.push({...post, img: post.image.data.toString("base64")});
+            }
+            else
+            {
+              response.push({...post});
+            }
+          }
+
+          res.json(response);
+        })
+      }
+    }
+    else
+    {
+      res.sendFile(__dirname+"/public/index.html");
+    }
+});
+
 app.get(routes, (req, res) =>
 {
     res.sendFile(__dirname+"/public/index.html");
@@ -79,7 +142,6 @@ app.get("*", (req, res) =>
 });
 
 app.post('/login',(req, res) => {
-  console.log(req.body);
   const user = new User({
       username: req.body.username,
       password: req.body.password,
@@ -135,7 +197,7 @@ app.post('/register', (req, res) => {
 app.post("/logged_in", (req, res) =>
 {
   res.status(200)
-  res.send(req.isAuthenticated());
+  res.json({status: req.isAuthenticated(), username: req.user ? req.user.username  : ""});
 });
 
 app.post("/logout", (req, res) =>
@@ -161,7 +223,10 @@ app.post("/create", upload.single('image'), async (req, res) =>
           author: req.user.username,
           title: req.body.title,
           content: req.body.content,
-          image: req.file ? fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)) : null,
+          image: {
+            data: req.file ? fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)) : null,
+            contentType: 'image/png',
+          },
       });
 
       if(req.file)

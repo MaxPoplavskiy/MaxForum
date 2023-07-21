@@ -20,7 +20,7 @@ function Navbar(props)
         <NavLink to="/posts" style={activeStyle} className={cssLightHandle("navbar-item", theme)}>Posts</NavLink>
         </div>
         <div className="navbar-list">
-            <NavLink to="/my-posts" style={activeStyle} className={cssLightHandle("navbar-item", theme)}>My Posts</NavLink>
+            <NavLink to={"/my-posts/" + props.username} style={activeStyle} className={cssLightHandle("navbar-item", theme)}>My Posts</NavLink>
             <NavLink to="/create" style={activeStyle} className={cssLightHandle("navbar-item", theme)}>Create</NavLink>
             <NavLink to="account" style={activeStyle} className={cssLightHandle("navbar-item", theme)}>Account</NavLink>
         </div>
