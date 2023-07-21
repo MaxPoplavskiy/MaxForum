@@ -5,10 +5,22 @@ const mongoose = require("mongoose");
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
-const passportLocalMongoose = require('passport-local-mongoose');
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
 const User = require('./src/model/user.jsx');
+const Post = require("./src/model/post.jsx");
+const multer = require('multer');
+const fs = require("fs");
+const path = require('path');
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, 'uploads')
+  },
+  filename: (req, file, cb) => {
+      cb(null, file.fieldname + '-' + Date.now())
+  }
+});
+
+const upload = multer({ storage: storage });
 
 passport.use(new LocalStrategy(
     function(username, password, done) {
@@ -122,7 +134,6 @@ app.post('/register', (req, res) => {
 
 app.post("/logged_in", (req, res) =>
 {
-  console.log(req.user);
   res.status(200)
   res.send(req.isAuthenticated());
 });
@@ -138,6 +149,42 @@ app.post("/logout", (req, res) =>
   });
   res.status(200);
   res.send("success");
+});
+
+app.post("/create", upload.single('image'), async (req, res) =>
+{
+  if(req.isAuthenticated())
+  {
+    try
+    {
+      const post = new Post({
+          author: req.user.username,
+          title: req.body.title,
+          content: req.body.content,
+          image: req.file ? fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)) : null,
+      });
+
+      if(req.file)
+      {
+        fs.unlink(path.join(__dirname + '/uploads/' + req.file.filename), () => {});
+      }
+
+      await post.save();
+  
+      res.status(201);
+      res.send("success");
+    }
+    catch(error)
+    {
+      res.status(200);
+      res.send(error.message);
+    }
+  }
+  else
+  {
+    res.status(401);
+    res.send("Unauthorized response");
+  }
 });
 
 app.listen(3000);
