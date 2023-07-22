@@ -13,8 +13,8 @@ function Post(props)
     const [post, setPost] = useState({});
 
     useEffect(() => {
-        console.log(window.location.href);
-        axios.get(window.location.href)
+        console.log(window.location.origin + "/api" + window.location.pathname);
+        axios.get(window.location.origin + "/api" + window.location.pathname)
         .then((response) => {
             setPost(response.data);
             console.log(response.data);

@@ -65,59 +65,45 @@ app.use(passport.authenticate('session'));
 
 const routes = ["/", "/posts", "/my-posts", "/create", "/account", "/login", "/register"]
 
-app.get("/posts/:postId", (req, res) =>
+app.get("/api/posts/:postId", (req, res) =>
 {
-  if(true)
+  Post.findById(req.params.postId)
+  .then((post) =>
   {
-    Post.findById(req.params.postId)
-    .then((post) =>
+    if(post.image)
+    {
+      res.json({title: post.title, content: post.content, date: post.date, postId: post.id, img: post.image.data.toString("base64")});
+    }
+    else
+    {
+      res.json({title: post.title, content: post.content, date: post.date, postId: post.id});
+    }
+  })
+});
+
+app.get("/api/posts", (req, res) =>
+{
+  Post.find({})
+  .then((posts) =>
+  {
+    const response = [];
+    for(const post of posts)
     {
       if(post.image)
       {
-        res.json({title: post.title, content: post.content, date: post.date, postId: post.id, img: post.image.data.toString("base64")});
+        response.push({title: post.title, content: post.content, date: post.date, postId: post.id, img: post.image.data.toString("base64")});
       }
       else
       {
-        res.json({title: post.title, content: post.content, date: post.date, postId: post.id});
+        response.push({title: post.title, content: post.content, date: post.date, postId: post.id});
       }
-    })
-  }
-  else
-  {
-    res.sendFile(__dirname+"/public/index.html");
-  }
+    }
+
+    res.json(response);
+  })
 });
 
-app.get("/posts", (req, res) =>
-{
-  if(true)
-  {
-    Post.find({})
-    .then((posts) =>
-    {
-      const response = [];
-      for(const post of posts)
-      {
-        if(post.image)
-        {
-          response.push({title: post.title, content: post.content, date: post.date, postId: post.id, img: post.image.data.toString("base64")});
-        }
-        else
-        {
-          response.push({title: post.title, content: post.content, date: post.date, postId: post.id});
-        }
-      }
-
-      res.json(response);
-    })
-  }
-  else
-  {
-    res.sendFile(__dirname+"/public/index.html");
-  }
-});
-
-app.get("/my-posts/:userId", (req, res) =>
+app.get("/api/my-posts/:userId", (req, res) =>
 {
     if(req.isAuthenticated())
     {
@@ -144,16 +130,12 @@ app.get("/my-posts/:userId", (req, res) =>
     }
     else
     {
-      res.sendFile(__dirname+"/public/index.html");
+      res.status(401);
+      res.send();
     }
 });
 
 app.get(routes, (req, res) =>
-{
-    res.sendFile(__dirname+"/public/index.html");
-});
-
-app.get("/posts/:postId", (req, res) =>
 {
     res.sendFile(__dirname+"/public/index.html");
 });

@@ -27,7 +27,7 @@ function PostCard(props)
                 <hr className={cssLightHandle("hr-more", theme)} />
             </div>
             <div>
-                {props.type === "user-card" ? <button className="btn-delete-card"><img className="img-delete" src={theme === "light" ? "trashcan-black.png" : "trashcan-white.png"} /></button> : ""}
+                {props.type === "user-card" ? <button className="btn-delete-card"><img className="img-delete" src={theme === "light" ? "/trashcan-black.png" : "/trashcan-white.png"} /></button> : ""}
             </div>
         </div>
     </div>

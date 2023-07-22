@@ -17,7 +17,7 @@ function Posts(props)
     const title = props.type === "user-posts" ? "My Posts" : "Posts";
 
     useEffect(() => {
-        axios.get(window.location.href)
+        axios.get(window.location.origin + "/api" + window.location.pathname)
         .then((response) => {
             setPosts(response.data);
             console.log(response.data);
