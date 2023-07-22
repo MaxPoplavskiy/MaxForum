@@ -4,7 +4,7 @@ import { globalThemeContext, cssLightHandle } from "../globalThemeContext";
 import { authStatusContext } from "../authStatusContext";
 import { useContext } from "react";
 import axios from "axios";
-import { enqueueSnackbar } from 'notistack'
+import { enqueueSnackbar } from 'notistack';
 import { redirect, useNavigate } from "react-router-dom";
 
 function AuthForm(props)
@@ -33,7 +33,7 @@ function AuthForm(props)
         })
         .catch((err) =>
         {
-            enqueueSnackbar(err, { variant: "error", autoHideDuration: 1000 });
+            enqueueSnackbar(err.response.data, { variant: "error", autoHideDuration: 1000 });
         });
     }
 

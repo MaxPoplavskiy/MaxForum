@@ -5,6 +5,7 @@ import { useContext, useEffect } from "react";
 import Comment from "./comment";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { enqueueSnackbar } from 'notistack';
 
 function Post(props)
 {
@@ -27,6 +28,9 @@ function Post(props)
         .then((response) => {
             console.log(response.data);
             getComments();
+        })
+        .catch((err) => {
+            enqueueSnackbar(err.response.data, { variant: "error", autoHideDuration: 1000 });
         });
     }
 

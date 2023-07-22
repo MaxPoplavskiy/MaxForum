@@ -68,7 +68,7 @@ app.get("/api/posts/:postId", (req, res) =>
   Post.findById(req.params.postId)
   .then((post) =>
   {
-    if(post.image)
+    if(post.image.data)
     {
       res.json({title: post.title, content: post.content, date: post.date, postId: post.id, img: post.image.data.toString("base64")});
     }
@@ -81,13 +81,13 @@ app.get("/api/posts/:postId", (req, res) =>
 
 app.get("/api/posts", (req, res) =>
 {
-  Post.find({})
+  Post.find({}).sort({date: -1})
   .then((posts) =>
   {
     const response = [];
     for(const post of posts)
     {
-      if(post.image)
+      if(post.image.data)
       {
         response.push({title: post.title, content: post.content, date: post.date, postId: post.id, img: post.image.data.toString("base64")});
       }
@@ -113,7 +113,7 @@ app.get("/api/my-posts/:userId", (req, res) =>
           const response = [];
           for(const post of posts)
           {
-            if(post.image)
+            if(post.image.data)
             {
               response.push({title: post.title, content: post.content, date: post.date, postId: post.id, img: post.image.data.toString("base64")});
             }
@@ -284,7 +284,7 @@ app.post("/api/posts/:postId/comments", (req, res) => {
   else
   {
     res.status(401);
-    res.send();
+    res.send("Unauthorized");
   }
 });
 
