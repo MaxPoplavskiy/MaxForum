@@ -26,7 +26,7 @@ function Posts(props)
 
     function createPostCard(post)
     {
-        return <PostCard type={PostCardsType} imgSrc={post.img} title={post.title} description={post.content} />
+        return <PostCard type={PostCardsType} imgSrc={post.img} title={post.title} description={post.content} postId={post.postId} />
     }
 
     return <div className={cssLightHandle("posts-content", theme)}>

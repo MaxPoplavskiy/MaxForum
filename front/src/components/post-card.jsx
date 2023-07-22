@@ -23,7 +23,7 @@ function PostCard(props)
         <div className="lowerbody-card">
             <div></div>
             <div className="more-div">
-                <Link to="/posts/weaver" className={cssLightHandle("more-link", theme)}>More</Link>
+                <Link to={"/posts/"+props.postId} className={cssLightHandle("more-link", theme)}>More</Link>
                 <hr className={cssLightHandle("hr-more", theme)} />
             </div>
             <div>

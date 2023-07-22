@@ -65,6 +65,29 @@ app.use(passport.authenticate('session'));
 
 const routes = ["/", "/posts", "/my-posts", "/create", "/account", "/login", "/register"]
 
+app.get("/posts/:postId", (req, res) =>
+{
+  if(true)
+  {
+    Post.findById(req.params.postId)
+    .then((post) =>
+    {
+      if(post.image)
+      {
+        res.json({title: post.title, content: post.content, date: post.date, postId: post.id, img: post.image.data.toString("base64")});
+      }
+      else
+      {
+        res.json({title: post.title, content: post.content, date: post.date, postId: post.id});
+      }
+    })
+  }
+  else
+  {
+    res.sendFile(__dirname+"/public/index.html");
+  }
+});
+
 app.get("/posts", (req, res) =>
 {
   if(true)
@@ -77,11 +100,11 @@ app.get("/posts", (req, res) =>
       {
         if(post.image)
         {
-          response.push({title: post.title, content: post.content, date: post.date, img: post.image.data.toString("base64")});
+          response.push({title: post.title, content: post.content, date: post.date, postId: post.id, img: post.image.data.toString("base64")});
         }
         else
         {
-          response.push({title: post.title, content: post.content, date: post.date});
+          response.push({title: post.title, content: post.content, date: post.date, postId: post.id});
         }
       }
 
@@ -108,14 +131,13 @@ app.get("/my-posts/:userId", (req, res) =>
           {
             if(post.image)
             {
-              response.push({title: post.title, content: post.content, date: post.date, img: post.image.data.toString("base64")});
+              response.push({title: post.title, content: post.content, date: post.date, postId: post.id, img: post.image.data.toString("base64")});
             }
             else
             {
-              response.push({title: post.title, content: post.content, date: post.date});
+              response.push({title: post.title, content: post.content, date: post.date, postId: post.id});
             }
           }
-
           res.json(response);
         })
       }
