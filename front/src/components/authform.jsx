@@ -19,22 +19,29 @@ function AuthForm(props)
 
     function submitButton(event)
     {
-        axios.post(window.location.href, {username: email, password: firstPassword})
-        .then((response) => {
-            if(response.data === "success")
-            {
-                navigate("/account");
-            }
-            else
-            {
-                enqueueSnackbar(response.data, { variant: "error", autoHideDuration: 1000 });
-            }
-            checkAuthStatus();
-        })
-        .catch((err) =>
+        if(props.title === "Register" && !checkPasswordsEquality(firstPassword, secondPassword))
         {
-            enqueueSnackbar(err.response.data, { variant: "error", autoHideDuration: 1000 });
-        });
+            enqueueSnackbar("passwords should be equal", { variant: "error", autoHideDuration: 1000 });
+        }
+        else
+        {
+            axios.post(window.location.href, {username: email, password: firstPassword})
+            .then((response) => {
+                if(response.data === "success")
+                {
+                    navigate("/account");
+                }
+                else
+                {
+                    enqueueSnackbar(response.data, { variant: "error", autoHideDuration: 1000 });
+                }
+                checkAuthStatus();
+            })
+            .catch((err) =>
+            {
+                enqueueSnackbar(err.response.data, { variant: "error", autoHideDuration: 1000 });
+            });
+        }
     }
 
     function emailChange(event)
@@ -52,19 +59,24 @@ function AuthForm(props)
         setSecondPassword(event.target.value);
     }
 
-    function checkPasswordsEquality(pas1, pas2)
+    function checkPasswordsEquality(password1, password2)
+    {
+        return password1 === password2;
+    }
+
+    function passwordInputColor(pas1, pas2)
     {
         if(pas1 === "" || pas2 === "")
         {
             return "";
         }
-        if(pas1 !== pas2)
+        if(checkPasswordsEquality(pas1, pas2))
         {
-            return "red";
+            return "green";
         }
         else
         {
-            return "green";
+            return "red";
         }
     }
 
@@ -73,8 +85,8 @@ function AuthForm(props)
             <div><h1 id="auth-title" className={cssLightHandle("title", theme)}>{props.title}</h1></div>
             <div className={cssLightHandle("auth-inputs-container", theme)}>
                 <input type="email" name="username" className={cssLightHandle("authform-input", theme)} placeholder="Email" onChange={emailChange} />
-                <input type="password" name="password" style={{borderColor: checkPasswordsEquality(firstPassword, secondPassword)}} className={cssLightHandle("authform-input", theme)} placeholder="Password" onChange={firstPasswordChange} />
-                {props.title === "Register" ? <input type="password" style={{borderColor: checkPasswordsEquality(firstPassword, secondPassword)}} className={cssLightHandle("authform-input", theme)} placeholder="Repeat password" onChange={secondPasswordChange} /> : ""}
+                <input type="password" name="password" style={{borderColor: passwordInputColor(firstPassword, secondPassword)}} className={cssLightHandle("authform-input", theme)} placeholder="Password" onChange={firstPasswordChange} />
+                {props.title === "Register" ? <input type="password" style={{borderColor: passwordInputColor(firstPassword, secondPassword)}} className={cssLightHandle("authform-input", theme)} placeholder="Repeat password" onChange={secondPasswordChange} /> : ""}
             </div>
             <button onClick={submitButton} id="authform-submit-btn" className={cssLightHandle("button transperent-button", theme)}>Submit</button>
         </div>
