@@ -107,7 +107,7 @@ app.get("/api/my-posts/:userId", (req, res) =>
     {
       if(req.params.userId === req.user.username)
       {
-        Post.find({author: req.user.username})
+        Post.find({author: req.user.username}).sort({date: -1})
         .then((posts) =>
         {
           const response = [];
@@ -166,10 +166,12 @@ app.post('/login',(req, res) => {
     if(err)
     {
       console.log(err);
+      res.status(400);
+      res.send("Auth error");
     }
     else
     {
-        passport.authenticate('local')(req, res, () => {
+        passport.authenticate('local', {failureMessage: "Couldn`t authenticate"})(req, res, () => {
         res.send('success');
       })
     }

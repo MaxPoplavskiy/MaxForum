@@ -62,13 +62,15 @@ function Post(props)
 
     return <div className="post-container">
         <div className="post-grid">
+                {post.img ? 
                 <div className="post-img-container">
-                    {post.img ? <img src={"data:image/png;charset=utf-8;base64,"+post.img} className={cssLightHandle("post-img", theme)} /> : ""}
+                    <img src={"data:image/png;charset=utf-8;base64,"+post.img} className={cssLightHandle("post-img", theme)} /> 
                 </div>
+                : ""}
 
-                <div><hr className={cssLightHandle("vertical-hr", theme)} /></div>
+                {post.img ?  <div><hr className={cssLightHandle("vertical-hr", theme)} /></div> : ''}
 
-                <div className="post-title-container">
+                <div className={post.img ? "post-title-container" : "post-title-container no-img"}>
                     <h1 className={cssLightHandle("post-title", theme)}>{post.title}</h1>
                 </div>
 

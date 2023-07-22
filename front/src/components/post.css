@@ -106,6 +106,10 @@
     width: 30px;
 }
 
+.post-title-container.no-img
+{
+    grid-column: span 3;
+}
 
 @media screen and (max-width: 900px)
 {
