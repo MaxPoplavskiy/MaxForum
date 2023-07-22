@@ -10,7 +10,7 @@ function Comment(props)
 
     return <div className={cssLightHandle("comment-container", theme)}>
         <div className="comment-upperbody">
-            <h1 className={cssLightHandle("comment-title", theme)}>{props.username}</h1>
+            <h1 className={cssLightHandle("comment-title", theme)}>{props.author}</h1>
             <p className={cssLightHandle("comment-timestamp", theme)}>{props.timestamp}</p>
         </div>
         <p className={cssLightHandle("comment-content", theme)}>{props.content}</p>

@@ -10,8 +10,6 @@ const Post = require("./src/model/post.jsx");
 const multer = require('multer');
 const fs = require("fs");
 const path = require('path');
-const post = require("./src/model/post.jsx");
-
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -140,6 +138,18 @@ app.get(routes, (req, res) =>
     res.sendFile(__dirname+"/public/index.html");
 });
 
+
+
+app.get("/api/posts/:postId/comments", (req, res) => {
+  Post.findById(req.params.postId)
+  .then((post) => {
+    res.send(post.comments);
+  })
+  .catch((err) => {
+    res.send(err);
+  })
+});
+
 app.get("*", (req, res) =>
 {
     res.sendFile(__dirname+"/public/index.html");
@@ -253,6 +263,28 @@ app.post("/create", upload.single('image'), async (req, res) =>
   {
     res.status(401);
     res.send("Unauthorized response");
+  }
+});
+
+
+
+app.post("/api/posts/:postId/comments", (req, res) => {
+  if(req.isAuthenticated())
+  {
+    Post.findByIdAndUpdate(req.params.postId,
+      { $push: { comments: {content: req.body.content, author: req.user.username}  } })
+    .then((post) => {
+      res.status(201);
+      res.send();
+    })
+    .catch((err) => {
+      res.send(err);
+    })
+  }
+  else
+  {
+    res.status(401);
+    res.send();
   }
 });
 

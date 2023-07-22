@@ -1,5 +1,20 @@
 const mongoose = require('mongoose');
-  
+
+const commentSchema = new mongoose.Schema({
+    author: {
+        type:String,
+        required: true,
+    },
+    content: {
+        type:String,
+        required: true,
+    },
+    date: {
+        type: Date,
+        required: true,
+        default: Date.now(),
+    },
+});
 
 const postSchema = new mongoose.Schema({
     author: {
@@ -23,6 +38,7 @@ const postSchema = new mongoose.Schema({
         data: Buffer,
         contentType: String,
     },
+    comments: [commentSchema],
 }); 
 
   

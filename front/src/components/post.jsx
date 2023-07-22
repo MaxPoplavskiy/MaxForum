@@ -10,7 +10,41 @@ function Post(props)
 {
     const { postId } = useParams();
     const theme = useContext(globalThemeContext);
+    const [comments, setComments] = useState([]);
+    const [comment, setComment] = useState("");
     const [post, setPost] = useState({});
+
+    function commentChange(event)
+    {
+        setComment(event.target.value);
+    }
+
+    function submitComment()
+    {
+        axios.post(window.location.origin + "/api" + window.location.pathname + "/comments", {
+            content: comment,
+        })
+        .then((response) => {
+            console.log(response.data);
+            getComments();
+        });
+    }
+
+    function getComments()
+    {
+        console.log(window.location.origin + "/api" + window.location.pathname + "/comments");
+        axios.get(window.location.origin + "/api" + window.location.pathname + "/comments")
+        .then((response) =>
+        {
+            console.log(response.data);
+            setComments(response.data);
+        });
+    }
+
+    function createComment(comment)
+    {
+        return <Comment author={comment.author} content={comment.content} timestamp={new Date(comment.date).toLocaleDateString()} />
+    }
 
     useEffect(() => {
         console.log(window.location.origin + "/api" + window.location.pathname);
@@ -19,12 +53,13 @@ function Post(props)
             setPost(response.data);
             console.log(response.data);
         });
+        getComments();
     }, [postId]);
 
     return <div className="post-container">
         <div className="post-grid">
                 <div className="post-img-container">
-                    <img src={"data:image/png;charset=utf-8;base64,"+post.img} className={cssLightHandle("post-img", theme)} />
+                    {post.img ? <img src={"data:image/png;charset=utf-8;base64,"+post.img} className={cssLightHandle("post-img", theme)} /> : ""}
                 </div>
 
                 <div><hr className={cssLightHandle("vertical-hr", theme)} /></div>
@@ -40,9 +75,10 @@ function Post(props)
 
                 <div className="post-comment-section">
                     <div className={cssLightHandle("post-comment-input-section", theme)}>
-                        <textarea type="text" className={cssLightHandle("comment-input", theme)} ></textarea>
-                        <button className="post-comment-btn"><img className="post-comment-btn-img" src={theme === "light" ? "/bubble_chat_black.png" : "/bubble_chat_white.png" } /></button>
+                        <textarea type="text" onChange={commentChange} className={cssLightHandle("comment-input", theme)} ></textarea>
+                        <button onClick={submitComment} className="post-comment-btn"><img className="post-comment-btn-img" src={theme === "light" ? "/bubble_chat_black.png" : "/bubble_chat_white.png" } /></button>
                     </div>
+                    {comments.map(createComment)}
                 </div>
         </div>
     </div>
