@@ -290,4 +290,23 @@ app.post("/api/posts/:postId/comments", (req, res) => {
   }
 });
 
+app.delete("/api/posts/:postId", (req, res) => {
+  if(req.isAuthenticated())
+  {
+    Post.deleteOne({_id: req.params.postId, author: req.user.username})
+    .then(() =>{
+      res.status(200);
+      res.send("Deleted");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+  else
+  {
+    res.status(401);
+    res.send("Unauthorized");
+  }
+});
+
 app.listen(3000);

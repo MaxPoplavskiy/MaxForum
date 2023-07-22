@@ -5,6 +5,7 @@ import { useContext, useEffect } from "react";
 import PostCard from "./post-card";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { enqueueSnackbar } from 'notistack';
 
 function Posts(props)
 {
@@ -16,17 +17,33 @@ function Posts(props)
     const PostCardsType = props.type === "user-posts" ? "user-card" : "";
     const title = props.type === "user-posts" ? "My Posts" : "Posts";
 
-    useEffect(() => {
+    function deletePost(postId)
+    {
+        axios.delete(window.location.origin + "/api/posts/" + postId)
+        .then((response) => {
+            getPosts();
+        })
+        .catch((err) => {
+            enqueueSnackbar(err.response.data, { variant: "error", autoHideDuration: 1000 });
+        })
+    }
+
+    function getPosts()
+    {
         axios.get(window.location.origin + "/api" + window.location.pathname)
         .then((response) => {
             setPosts(response.data);
             console.log(response.data);
         });
+    }
+
+    useEffect(() => {
+        getPosts();
     }, [userId, postName]);
 
     function createPostCard(post)
     {
-        return <PostCard type={PostCardsType} imgSrc={post.img} title={post.title} description={post.content} postId={post.postId} />
+        return <PostCard type={PostCardsType} deleteFunc={deletePost} imgSrc={post.img} title={post.title} description={post.content} postId={post.postId} />
     }
 
     return <div className={cssLightHandle("posts-content", theme)}>
