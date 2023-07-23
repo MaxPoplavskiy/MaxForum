@@ -39,6 +39,10 @@ const postSchema = new mongoose.Schema({
         contentType: String,
     },
     comments: [commentSchema],
+    votes: [{
+        author: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true },
+        value: {type: Boolean, required: true},
+    }],
 }); 
 
   

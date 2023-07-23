@@ -68,13 +68,17 @@ app.get("/api/posts/:postId", (req, res) =>
   Post.findById(req.params.postId)
   .then((post) =>
   {
+    const voteCount = post.votes.reduce(
+      (accumulator, currentValue) => accumulator + (currentValue.value ? 1 : -1),
+      0
+    );
     if(post.image.data)
     {
-      res.json({title: post.title, content: post.content, date: post.date, postId: post.id, author: post.author, img: post.image.data.toString("base64")});
+      res.json({voteCount: voteCount, title: post.title, content: post.content, date: post.date, postId: post.id, author: post.author, img: post.image.data.toString("base64")});
     }
     else
     {
-      res.json({title: post.title, content: post.content, date: post.date, postId: post.id, author: post.author});
+      res.json({voteCount: voteCount, title: post.title, content: post.content, date: post.date, postId: post.id, author: post.author});
     }
   })
 });
@@ -87,13 +91,17 @@ app.get("/api/posts", (req, res) =>
     const response = [];
     for(const post of posts)
     {
+      const voteCount = post.votes.reduce(
+        (accumulator, currentValue) => accumulator + (currentValue.value ? 1 : -1),
+        0
+      );
       if(post.image.data)
       {
-        response.push({title: post.title, content: post.content, date: post.date, postId: post.id, author: post.author, img: post.image.data.toString("base64")});
+        response.push({voteCount: voteCount, title: post.title, content: post.content, date: post.date, postId: post.id, author: post.author, img: post.image.data.toString("base64")});
       }
       else
       {
-        response.push({title: post.title, content: post.content, date: post.date, postId: post.id, author: post.author});
+        response.push({voteCount: voteCount, title: post.title, content: post.content, date: post.date, postId: post.id, author: post.author});
       }
     }
 
@@ -113,13 +121,17 @@ app.get("/api/my-posts/:userId", (req, res) =>
           const response = [];
           for(const post of posts)
           {
+            const voteCount = post.votes.reduce(
+              (accumulator, currentValue) => accumulator + (currentValue.value ? 1 : -1),
+              0
+            );
             if(post.image.data)
             {
-              response.push({title: post.title, content: post.content, date: post.date, postId: post.id, author: post.author, img: post.image.data.toString("base64")});
+              response.push({voteCount: voteCount, title: post.title, content: post.content, date: post.date, postId: post.id, author: post.author, img: post.image.data.toString("base64")});
             }
             else
             {
-              response.push({title: post.title, content: post.content, date: post.date, postId: post.id, author: post.author});
+              response.push({voteCount: voteCount, title: post.title, content: post.content, date: post.date, postId: post.id, author: post.author});
             }
           }
           res.json(response);
@@ -129,7 +141,7 @@ app.get("/api/my-posts/:userId", (req, res) =>
     else
     {
       res.status(401);
-      res.send();
+      res.send("Unauthorized");
     }
 });
 
@@ -148,6 +160,36 @@ app.get("/api/posts/:postId/comments", (req, res) => {
   .catch((err) => {
     res.send(err);
   })
+});
+
+app.get("/api/posts/:postId/is_voted", (req, res) => {
+  if(req.isAuthenticated())
+  {
+    Post.findById(req.params.postId)
+    .then((post) => {
+      const vote = post.votes.find(vote => vote.author.equals(req.user._id));
+      if(!vote)
+      {
+        res.send("No vote");
+      }
+      else if(vote.value)
+      {
+        res.send("Like");
+      }
+      else
+      {
+        res.send("Dislike");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+  else
+  {
+    res.status(401);
+    res.send("Unauthorized");
+  }
 });
 
 app.get("*", (req, res) =>
@@ -264,10 +306,9 @@ app.post("/create", upload.single('image'), async (req, res) =>
   else
   {
     res.status(401);
-    res.send("Unauthorized response");
+    res.send("Unauthorized");
   }
 });
-
 
 
 app.post("/api/posts/:postId/comments", (req, res) => {
@@ -366,8 +407,42 @@ app.patch("/api/edit/:postId", upload.single('image'), async (req, res) => {
   else
   {
     res.status(401);
-    res.send("Unauthorized response");
+    res.send("Unauthorized");
   }
 });
+
+app.put("/api/posts/:postId/votes", (req, res) => {
+  if(req.isAuthenticated())
+  {
+    Post.findById(req.params.postId)
+    .then((post) =>
+    {
+      const vote = post.votes.find(vote => vote.author.equals(req.user._id));
+      if(!vote)
+      {
+        post.votes.push({author: req.user._id, value: req.body.vote});
+      }
+      else
+      {
+        if(vote.value === req.body.vote)
+        {
+          post.votes = post.votes.filter(postVote => postVote !== vote);
+        }
+        else
+        {
+          vote.value = req.body.vote;
+        }
+      }
+      post.save();
+      res.status(200);
+      res.send();
+    })
+  }
+  else
+  {
+    res.status(401);
+    res.send("Unauthorized")
+  }
+})
 
 app.listen(3000);

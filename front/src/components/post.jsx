@@ -14,6 +14,15 @@ function Post(props)
     const [comments, setComments] = useState([]);
     const [comment, setComment] = useState("");
     const [post, setPost] = useState({});
+    const [currentVote, setCurrentVote] = useState("No vote");
+
+    function getCurrentVote()
+    {
+        axios.get(window.location.origin + "/api" + window.location.pathname + "/is_voted")
+        .then((response) => {
+            setCurrentVote(response.data);
+        })
+    }
 
     function commentChange(event)
     {
@@ -26,8 +35,20 @@ function Post(props)
             content: comment,
         })
         .then((response) => {
-            console.log(response.data);
             getComments();
+        })
+        .catch((err) => {
+            enqueueSnackbar(err.response.data, { variant: "error", autoHideDuration: 1000 });
+        });
+    }
+
+    function sendVote(vote)
+    {
+        axios.put(window.location.origin + "/api" + window.location.pathname + "/votes", {
+            vote: vote,
+        })
+        .then((response) => {
+            getPost();
         })
         .catch((err) => {
             enqueueSnackbar(err.response.data, { variant: "error", autoHideDuration: 1000 });
@@ -36,11 +57,9 @@ function Post(props)
 
     function getComments()
     {
-        console.log(window.location.origin + "/api" + window.location.pathname + "/comments");
         axios.get(window.location.origin + "/api" + window.location.pathname + "/comments")
         .then((response) =>
         {
-            console.log(response.data);
             setComments(response.data);
         });
     }
@@ -50,13 +69,19 @@ function Post(props)
         return <Comment author={comment.author} content={comment.content} timestamp={new Date(comment.date).toLocaleDateString()} />
     }
 
-    useEffect(() => {
+    function getPost()
+    {
         axios.get(window.location.origin + "/api" + window.location.pathname)
         .then((response) => {
             setPost(response.data);
-            console.log(response.data);
         });
+        getCurrentVote();
         getComments();
+    }
+
+
+    useEffect(() => {
+        getPost();
     }, [postId]);
 
     return <div className="post-container">
@@ -77,6 +102,16 @@ function Post(props)
                 <div className={cssLightHandle("post-content", theme)}><p>{post.content}</p></div>
                 
                 <div className="post-bottom-section">
+                    <div className="post-vote-section">
+                        <button className="post-vote-button" onClick={() => sendVote(true)} ><img alt="vote button" 
+                            src={currentVote === "Like" ? "/up-arrow-green.png" : theme === "light" ? "/up-arrow-black.png" : "/up-arrow-white.png"} />
+                        </button>
+                        <h3 className={cssLightHandle("post-vote-number", theme)}>{post.voteCount}</h3>
+                        <button className="post-vote-button" onClick={() => sendVote(false)} ><img alt="vote button" 
+                            src={currentVote === "Dislike" ? "/down-arrow-red.png" : theme === "light" ? "/down-arrow-black.png" : "/down-arrow-white.png"} />
+                        </button>
+                    </div>
+                    
                     <div className="post-info-section">
                         <h3 className={cssLightHandle("post-info-section-text", theme)}>{post.author}</h3>
                         <h3 className={cssLightHandle("post-info-section-text", theme)}>{new Date(post.date).toLocaleDateString()}</h3>
