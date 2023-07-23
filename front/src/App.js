@@ -6,6 +6,7 @@ import Home from './components/home';
 import Account from './components/account';
 import Posts from "./components/posts"
 import CreatePost from './components/create-post';
+import EditPost from "./components/edit-post";
 import AuthForm from './components/authform';
 import Post from './components/post';
 import PageNotFound from './components/pagenotfound';
@@ -78,6 +79,7 @@ function App(props) {
               <Route path="/my-posts/:userId" key={'single'} element={authStatus ? <Posts type="user-posts" /> : <Navigate to="/account" />} />
               <Route path="/my-posts/" key={'all'} element={authStatus ? <Navigate to={"/my-posts/" + username} /> : <Navigate to="/account" />} />
               <Route path="/create" element={authStatus ? <CreatePost /> : <Navigate to="/account" />} />
+              <Route path="/edit/:postId" element={authStatus ? <EditPost /> : <Navigate to="/account" />} />
               <Route path="/login" element={!authStatus ? <AuthForm title="Login" /> : <Navigate to="/account" />} />
               <Route path="/register" element={!authStatus ? <AuthForm title="Register" /> : <Navigate to="/account" />} />
               <Route path="/404" element={<PageNotFound />} />

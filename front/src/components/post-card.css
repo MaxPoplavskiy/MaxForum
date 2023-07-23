@@ -60,13 +60,18 @@
     background-color: transparent;
     border: none;
     display: block;
-    margin-left: auto;
     width: 50px;
 }
 
+
 .img-delete
 {
-    width: 100%;
+    width: 50px;
+}
+
+.img-edit
+{
+    width: 50px;
 }
 
 .card-description
@@ -101,4 +106,10 @@
     grid-template-columns: 30% 40% 30%;
     justify-content: space-between;
     margin-top: auto;
+}
+
+.post-action-buttons
+{
+    display: flex;
+    justify-content: end;
 }

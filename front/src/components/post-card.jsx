@@ -11,7 +11,7 @@ function PostCard(props)
 
     return <div className={cssLightHandle("card-container", theme)}>
         <div className={cssLightHandle("upperbody-card", theme)}>
-            {props.imgSrc ? <div className={cssLightHandle("card-img-div", theme)}><img src={"data:image/png;charset=utf-8;base64,"+props.imgSrc}  className={cssLightHandle("card-img", theme)} /></div> : ""} 
+            {props.imgSrc ? <div className={cssLightHandle("card-img-div", theme)}><img src={"data:image/png;charset=utf-8;base64,"+props.imgSrc} alt="postcard image" className={cssLightHandle("card-img", theme)} /></div> : ""} 
             <div className={cssLightHandle("card-title-div", theme)}>
                 <h2 className={cssLightHandle("card-title", theme)}>{props.title}</h2>
                 <hr className={cssLightHandle("hr-card-title", theme)} />
@@ -26,8 +26,9 @@ function PostCard(props)
                 <Link to={"/posts/"+props.postId} className={cssLightHandle("more-link", theme)}>More</Link>
                 <hr className={cssLightHandle("hr-more", theme)} />
             </div>
-            <div>
-                {props.type === "user-card" ? <button onClick={() => props.deleteFunc(props.postId)} className="btn-delete-card"><img className="img-delete" src={theme === "light" ? "/trashcan-black.png" : "/trashcan-white.png"} /></button> : ""}
+            <div className="post-action-buttons">
+                {props.type === "user-card" ? <Link to={"/edit/" + props.postId} className="btn-edit-card"><img className="img-edit" alt="edit button image" src={theme === "light" ? "/edit-white.png" : "/edit-black.png"} /></Link> : ""}
+                {props.type === "user-card" ? <button onClick={() => props.deleteFunc(props.postId)} className="btn-delete-card"><img className="img-delete" alt="delete button image" src={theme === "light" ? "/trashcan-black.png" : "/trashcan-white.png"} /></button> : ""}
             </div>
         </div>
     </div>

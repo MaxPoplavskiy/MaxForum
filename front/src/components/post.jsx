@@ -51,7 +51,6 @@ function Post(props)
     }
 
     useEffect(() => {
-        console.log(window.location.origin + "/api" + window.location.pathname);
         axios.get(window.location.origin + "/api" + window.location.pathname)
         .then((response) => {
             setPost(response.data);
@@ -64,7 +63,7 @@ function Post(props)
         <div className="post-grid">
                 {post.img ? 
                 <div className="post-img-container">
-                    <img src={"data:image/png;charset=utf-8;base64,"+post.img} className={cssLightHandle("post-img", theme)} /> 
+                    <img src={"data:image/png;charset=utf-8;base64,"+post.img} alt="post image" className={cssLightHandle("post-img", theme)} /> 
                 </div>
                 : ""}
 
@@ -82,7 +81,7 @@ function Post(props)
                 <div className="post-comment-section">
                     <div className={cssLightHandle("post-comment-input-section", theme)}>
                         <textarea type="text" onChange={commentChange} className={cssLightHandle("comment-input", theme)} ></textarea>
-                        <button onClick={submitComment} className="post-comment-btn"><img className="post-comment-btn-img" src={theme === "light" ? "/bubble_chat_black.png" : "/bubble_chat_white.png" } /></button>
+                        <button onClick={submitComment} className="post-comment-btn"><img className="post-comment-btn-img" alt="" src={theme === "light" ? "/bubble_chat_black.png" : "/bubble_chat_white.png" } /></button>
                     </div>
                     {comments.map(createComment)}
                 </div>

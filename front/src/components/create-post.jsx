@@ -67,7 +67,7 @@ function CreatePost(props)
             <div className="data-forms-container">
                 <div className="img-form-container">
                     <h2 className={cssLightHandle("title-form", theme)}>Image<hr className={cssLightHandle("thick-h2", theme)} /></h2>
-                    {image ? <div className="img-preview-div"><img src={URL.createObjectURL(image)} className={cssLightHandle("img-preview", theme)} /></div>: ""}
+                    {image ? <div className="img-preview-div"><img src={URL.createObjectURL(image)} alt="" className={cssLightHandle("img-preview", theme)} /></div>: ""}
                     <div className={cssLightHandle("button transperent-button img-upload-div", theme)}>
                     <label htmlFor="file-upload" className={cssLightHandle("img-upload", theme)}>
                         <div>Upload Image</div>

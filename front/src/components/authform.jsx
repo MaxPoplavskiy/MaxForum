@@ -5,7 +5,7 @@ import { authStatusContext } from "../authStatusContext";
 import { useContext } from "react";
 import axios from "axios";
 import { enqueueSnackbar } from 'notistack';
-import { redirect, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 
 function AuthForm(props)
 {

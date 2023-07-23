@@ -309,4 +309,65 @@ app.delete("/api/posts/:postId", (req, res) => {
   }
 });
 
+app.patch("/api/edit/:postId", upload.single('image'), async (req, res) => {
+  if(req.isAuthenticated())
+  {
+    try
+    {
+      if(req.file)
+      {
+        Post.findOneAndUpdate({_id: req.params.postId, author: req.user.username}, 
+          { 
+            title: req.body.title, 
+            content: req.body.content, 
+            image: {
+                data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
+                contentType: 'image/png',
+          } 
+        })
+        .then(() => {
+          fs.unlink(path.join(__dirname + '/uploads/' + req.file.filename), () => {});
+        });
+
+      }
+      else if(req.body.deleteImage)
+      {
+        Post.findOneAndUpdate({_id: req.params.postId, author: req.user.username}, 
+          { 
+            title: req.body.title, 
+            content: req.body.content, 
+            image: {
+                data: null,
+                contentType: 'image/png',
+          } 
+        })
+        .then();
+      }
+      else
+      {
+        Post.findOneAndUpdate({_id: req.params.postId, author: req.user.username}, 
+          { 
+            title: req.body.title, 
+            content: req.body.content, 
+        })
+        .then();
+      }
+      
+  
+      res.status(200);
+      res.send("success");
+    }
+    catch(error)
+    {
+      res.status(200);
+      res.send(error.message);
+    }
+  }
+  else
+  {
+    res.status(401);
+    res.send("Unauthorized response");
+  }
+});
+
 app.listen(3000);
