@@ -76,6 +76,13 @@ function Post(props)
 
                 <div className={cssLightHandle("post-content", theme)}><p>{post.content}</p></div>
                 
+                <div className="post-bottom-section">
+                    <div className="post-info-section">
+                        <h3 className={cssLightHandle("post-info-section-text", theme)}>{post.author}</h3>
+                        <h3 className={cssLightHandle("post-info-section-text", theme)}>{new Date(post.date).toLocaleDateString()}</h3>
+                    </div>
+                </div>
+
                 <hr className={cssLightHandle("hr-post-comment-section", theme)} />
 
                 <div className="post-comment-section">

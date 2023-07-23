@@ -70,11 +70,11 @@ app.get("/api/posts/:postId", (req, res) =>
   {
     if(post.image.data)
     {
-      res.json({title: post.title, content: post.content, date: post.date, postId: post.id, img: post.image.data.toString("base64")});
+      res.json({title: post.title, content: post.content, date: post.date, postId: post.id, author: post.author, img: post.image.data.toString("base64")});
     }
     else
     {
-      res.json({title: post.title, content: post.content, date: post.date, postId: post.id});
+      res.json({title: post.title, content: post.content, date: post.date, postId: post.id, author: post.author});
     }
   })
 });
@@ -89,11 +89,11 @@ app.get("/api/posts", (req, res) =>
     {
       if(post.image.data)
       {
-        response.push({title: post.title, content: post.content, date: post.date, postId: post.id, img: post.image.data.toString("base64")});
+        response.push({title: post.title, content: post.content, date: post.date, postId: post.id, author: post.author, img: post.image.data.toString("base64")});
       }
       else
       {
-        response.push({title: post.title, content: post.content, date: post.date, postId: post.id});
+        response.push({title: post.title, content: post.content, date: post.date, postId: post.id, author: post.author});
       }
     }
 
@@ -115,11 +115,11 @@ app.get("/api/my-posts/:userId", (req, res) =>
           {
             if(post.image.data)
             {
-              response.push({title: post.title, content: post.content, date: post.date, postId: post.id, img: post.image.data.toString("base64")});
+              response.push({title: post.title, content: post.content, date: post.date, postId: post.id, author: post.author, img: post.image.data.toString("base64")});
             }
             else
             {
-              response.push({title: post.title, content: post.content, date: post.date, postId: post.id});
+              response.push({title: post.title, content: post.content, date: post.date, postId: post.id, author: post.author});
             }
           }
           res.json(response);
