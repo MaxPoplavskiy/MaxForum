@@ -38,7 +38,7 @@ function CreatePost(props)
         formData.append("title", title);
         formData.append("content", content);
         
-        axios.post("http://localhost:3000/create", formData, {
+        axios.post(window.location.origin + "/create", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
               },   

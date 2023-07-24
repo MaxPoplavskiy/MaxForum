@@ -24,7 +24,7 @@ function App(props) {
 
   function checkAuthStatus()
   {
-    axios.post("http://localhost:3000/logged_in")
+    axios.post(window.location.origin + "/logged_in")
     .then((response) => {
       setAuthStatus(response.data.status);
       cookies.set("last-login-status", response.data.status);

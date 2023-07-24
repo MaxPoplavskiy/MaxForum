@@ -14,7 +14,7 @@ function Account(props)
 
     function logOut()
     {
-        axios.post("http://localhost:3000/logout").then((response) =>
+        axios.post(window.location.origin + "/logout").then((response) =>
         {
             checkAuthStatus();
             console.log(response);

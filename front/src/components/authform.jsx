@@ -25,6 +25,7 @@ function AuthForm(props)
         }
         else
         {
+            console.log(window.location.href);
             axios.post(window.location.href, {username: email, password: firstPassword})
             .then((response) => {
                 if(response.data === "success")

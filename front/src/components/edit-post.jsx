@@ -60,7 +60,7 @@ function EditPost(props)
 
     function getPost()
     {
-        axios.get("http://localhost:3000/api/posts/" + postId)
+        axios.get(window.location.origin + "/api/posts/" + postId)
         .then((response) => {
             setTitle(response.data.title);
             setContent(response.data.content);
@@ -83,7 +83,7 @@ function EditPost(props)
         formData.append("deleteImage", deleteImageStatus ? "true" : "");
         formData.append("content", content);
         
-        axios.patch("http://localhost:3000/api/edit/" + postId, formData, {
+        axios.patch(window.location.origin + "/api/edit/" + postId, formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
               },   
