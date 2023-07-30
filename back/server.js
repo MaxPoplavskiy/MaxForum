@@ -9,6 +9,7 @@ const fs = require("fs");
 const path = require('path');
 const client = require("./src/db.jsx");
 const cookieParser = require("cookie-parser");
+const countVotes = require("./src/countVote.jsx");
 
 passport.serializeUser(function(user, cb) {
   process.nextTick(function() {
@@ -62,15 +63,17 @@ app.get("/api/posts/:postId", async (req, res) =>
 {
   try
   {
+    const voteCount = countVotes(await client.query("SELECT * FROM votes WHERE post_id = $1", [req.params.postId]));
+
     const result = await client.query("SELECT * FROM posts WHERE post_id = $1", [req.params.postId]);
     const post = result.rows[0];
     if(post.post_image)
     {
-      res.json({title: post.post_title, content: post.post_message, date: post.create_time, postId: post.post_id, author: post.author, img: post.post_image.toString("base64")});
+      res.json({voteCount:voteCount, title: post.post_title, content: post.post_message, date: post.create_time, postId: post.post_id, author: post.author, img: post.post_image.toString("base64")});
     }
     else
     {
-      res.json({title: post.post_title, content: post.post_message, date: post.create_time, postId: post.post_id, author: post.author});
+      res.json({voteCount:voteCount, title: post.post_title, content: post.post_message, date: post.create_time, postId: post.post_id, author: post.author});
     }
   }
   catch(err)
@@ -146,28 +149,25 @@ app.get("/api/posts/:postId/comments", async (req, res) => {
   }
 });
 
-app.get("/api/posts/:postId/is_voted", (req, res) => {
+app.get("/api/posts/:postId/is_voted", async (req, res) => {
   if(req.isAuthenticated())
   {
-    Post.findById(req.params.postId)
-    .then((post) => {
-      const vote = post.votes.find(vote => vote.author.equals(req.user._id));
-      if(!vote)
-      {
-        res.send("No vote");
-      }
-      else if(vote.value)
-      {
-        res.send("Like");
-      }
-      else
-      {
-        res.send("Dislike");
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    const vote = (await client.query("SELECT * FROM votes WHERE post_id=$1 AND user_id=$2", [req.params.postId, req.user.id])).rows[0];
+    if(vote === undefined)
+    {
+      res.status(200);
+      res.send("No vote");
+    }
+    else if(vote.vote)
+    {
+      res.status(200);
+      res.send("Like");
+    }
+    else
+    {
+      res.status(200);
+      res.send("Dislike");
+    }
   }
   else
   {
@@ -328,32 +328,24 @@ app.patch("/api/edit/:postId", upload.single('image'), async (req, res) => {
   }
 });
 
-app.put("/api/posts/:postId/votes", (req, res) => {
+app.put("/api/posts/:postId/votes", async (req, res) => {
   if(req.isAuthenticated())
   {
-    Post.findById(req.params.postId)
-    .then((post) =>
-    {
-      const vote = post.votes.find(vote => vote.author.equals(req.user._id));
-      if(!vote)
+      const oldVote = (await client.query("SELECT vote FROM votes WHERE post_id=$1 AND user_id=$2", [req.params.postId, req.user.id])).rows[0];
+      if(oldVote === undefined)
       {
-        post.votes.push({author: req.user._id, value: req.body.vote});
+        await client.query("INSERT INTO votes (vote, post_id, user_id) VALUES ($1, $2, $3)", [req.body.vote, req.params.postId, req.user.id]);
+      }
+      else if(req.body.vote === oldVote.vote)
+      {
+        await client.query("DELETE FROM votes WHERE post_id=$1 AND user_id=$2", [req.params.postId, req.user.id]);
       }
       else
       {
-        if(vote.value === req.body.vote)
-        {
-          post.votes = post.votes.filter(postVote => postVote !== vote);
-        }
-        else
-        {
-          vote.value = req.body.vote;
-        }
+        await client.query("UPDATE votes SET vote=$1 WHERE post_id=$2 AND user_id=$3", [req.body.vote, req.params.postId, req.user.id]);
       }
-      post.save();
       res.status(200);
       res.send();
-    })
   }
   else
   {
