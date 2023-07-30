@@ -66,7 +66,7 @@ function Post(props)
 
     function createComment(comment)
     {
-        return <Comment author={comment.author} content={comment.content} timestamp={new Date(comment.date).toLocaleDateString()} />
+        return <Comment author={comment.author} content={comment.content} timestamp={new Date(comment.create_date).toLocaleDateString()} />
     }
 
     function getPost()
