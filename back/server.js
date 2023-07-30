@@ -58,24 +58,25 @@ app.use(passport.authenticate('session'));
 
 const routes = ["/", "/posts", "/my-posts", "/create", "/account", "/login", "/register"]
 
-app.get("/api/posts/:postId", (req, res) =>
+app.get("/api/posts/:postId", async (req, res) =>
 {
-  Post.findById(req.params.postId)
-  .then((post) =>
+  try
   {
-    const voteCount = post.votes.reduce(
-      (accumulator, currentValue) => accumulator + (currentValue.value ? 1 : -1),
-      0
-    );
-    if(post.image.data)
+    const result = await client.query("SELECT * FROM posts WHERE post_id = $1", [req.params.postId]);
+    const post = result.rows[0];
+    if(post.post_image)
     {
-      res.json({voteCount: voteCount, title: post.title, content: post.content, date: post.date, postId: post.id, author: post.author, img: post.image.data.toString("base64")});
+      res.json({title: post.post_title, content: post.post_message, date: post.create_time, postId: post.post_id, author: post.author, img: post.post_image.toString("base64")});
     }
     else
     {
-      res.json({voteCount: voteCount, title: post.title, content: post.content, date: post.date, postId: post.id, author: post.author});
+      res.json({title: post.post_title, content: post.post_message, date: post.create_time, postId: post.post_id, author: post.author});
     }
-  })
+  }
+  catch(err)
+  {
+    console.log(err);
+  }
 });
 
 app.get("/api/posts", async (req, res) =>
@@ -133,13 +134,7 @@ app.get(routes, (req, res) =>
 
 
 app.get("/api/posts/:postId/comments", (req, res) => {
-  Post.findById(req.params.postId)
-  .then((post) => {
-    res.send(post.comments);
-  })
-  .catch((err) => {
-    res.send(err);
-  })
+  
 });
 
 app.get("/api/posts/:postId/is_voted", (req, res) => {
