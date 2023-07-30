@@ -133,8 +133,17 @@ app.get(routes, (req, res) =>
 
 
 
-app.get("/api/posts/:postId/comments", (req, res) => {
-  
+app.get("/api/posts/:postId/comments", async (req, res) => {
+  try
+  {
+    const comments = await client.query("SELECT email AS author, comments.create_date, comments.content FROM comments INNER JOIN users ON users.user_id = comments.author WHERE post_id = $1 ORDER BY create_date ASC", [req.params.postId]);
+    res.status(200);
+    res.send(comments.rows);
+  }
+  catch(err)
+  {
+    console.log(err);
+  }
 });
 
 app.get("/api/posts/:postId/is_voted", (req, res) => {
@@ -243,18 +252,19 @@ app.post("/create", upload.single('image'), async (req, res) =>
 });
 
 
-app.post("/api/posts/:postId/comments", (req, res) => {
+app.post("/api/posts/:postId/comments", async (req, res) => {
   if(req.isAuthenticated())
   {
-    Post.findByIdAndUpdate(req.params.postId,
-      { $push: { comments: {content: req.body.content, author: req.user.username}  } })
-    .then((post) => {
-      res.status(201);
+    try
+    {
+      await client.query("INSERT INTO comments (author, post_id, content) VALUES ($1, $2, $3)", [req.user.id, req.params.postId, req.body.content]);
+      res.status(200);
       res.send();
-    })
-    .catch((err) => {
-      res.send(err);
-    })
+    }
+    catch(err)
+    {
+      console.log(err);
+    }
   }
   else
   {
