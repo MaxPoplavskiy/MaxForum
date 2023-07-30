@@ -8,12 +8,13 @@ const multer = require('multer');
 const fs = require("fs");
 const path = require('path');
 const client = require("./src/db.jsx");
+const cookieParser = require("cookie-parser");
 
 passport.serializeUser(function(user, cb) {
   process.nextTick(function() {
     return cb(null, {
-      id: user.id,
-      username: user.username,
+      id: user.user_id,
+      username: user.email,
       picture: user.picture
     });
   });
@@ -41,6 +42,7 @@ const app = express();
 app.use(express.static("public"));
 app.use(bp.urlencoded({extended: true}));
 app.use(express.json());
+app.use(cookieParser());
 
 
 app.use(session({
@@ -233,22 +235,16 @@ app.post("/create", upload.single('image'), async (req, res) =>
   {
     try
     {
-      const post = new Post({
-          author: req.user.username,
-          title: req.body.title,
-          content: req.body.content,
-          image: {
-            data: req.file ? fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)) : null,
-            contentType: 'image/png',
-          },
-      });
-
       if(req.file)
       {
+        const image = fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename));
+        await client.query("INSERT INTO posts (author, post_title, post_message, post_image) VALUES ($1, $2, $3, $4)", [req.user.id, req.body.title, req.body.content, image]);
         fs.unlink(path.join(__dirname + '/uploads/' + req.file.filename), () => {});
       }
-
-      await post.save();
+      else
+      {
+        await client.query("INSERT INTO posts (author, post_title, post_message) VALUES ($1, $2, $3)", [req.user.id, req.body.title, req.body.content]);
+      }
   
       res.status(201);
       res.send("success");
