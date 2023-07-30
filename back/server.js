@@ -191,8 +191,8 @@ app.get("*", (req, res) =>
 });
 
 app.post("/login",
-  passport.authenticate("local-login", { session: false }),
-  (req, res, next) => {
+  passport.authenticate("local-login", { session: true }),
+  (req, res) => {
     res.status(200);
     res.json({ user: req.user });
   }
