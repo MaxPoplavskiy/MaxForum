@@ -1,16 +1,30 @@
 require("dotenv").config();
 const express = require("express");
 const bp = require("body-parser");
-const mongoose = require("mongoose");
 const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+require("./src/passportConfig.jsx")(passport);
 const session = require('express-session');
-const User = require('./src/model/user.jsx');
-const Post = require("./src/model/post.jsx");
 const multer = require('multer');
 const fs = require("fs");
 const path = require('path');
 const client = require("./src/db.jsx");
+
+passport.serializeUser(function(user, cb) {
+  process.nextTick(function() {
+    return cb(null, {
+      id: user.id,
+      username: user.username,
+      picture: user.picture
+    });
+  });
+});
+
+passport.deserializeUser(function(user, cb) {
+  process.nextTick(function() {
+    return cb(null, user);
+  });
+});
+
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -22,28 +36,6 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-
-passport.use(new LocalStrategy(
-    function(username, password, done) {
-      User.findOne({ username: username }, function (err, user) {
-        if (err) { return done(err); }
-        if (!user) { return done(null, false); }
-        if (!user.verifyPassword(password)) { return done(null, false); }
-        return done(null, user);
-      });
-    }
-));
-
-
-mongoose.connect("mongodb://127.0.0.1:27017/MaxForum");
-mongoose.pluralize(null);
-
-
-
-passport.use(User.createStrategy());
-
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
 
 const app = express();
 app.use(express.static("public"));
@@ -198,60 +190,23 @@ app.get("*", (req, res) =>
     res.sendFile(__dirname+"/public/index.html");
 });
 
-app.post('/login',(req, res) => {
-  const user = new User({
-      username: req.body.username,
-      password: req.body.password,
-  });
+app.post("/login",
+  passport.authenticate("local-login", { session: false }),
+  (req, res, next) => {
+    res.status(200);
+    res.json({ user: req.user });
+  }
+);
 
-  req.logIn(user, (err) =>
-  {
-    if(err)
-    {
-      console.log(err);
-      res.status(400);
-      res.send("Auth error");
-    }
-    else
-    {
-        passport.authenticate('local', {failureMessage: "Couldn`t authenticate"})(req, res, () => {
-        res.send('success');
-      })
-    }
-  })
-});
-
-app.post('/register', (req, res) => {
-  User.register(new User({username: req.body.username}), req.body.password, (err, user) => {
-    if(err) {
-      if(err.code === 11000)
-      {
-        res.status(200);
-        res.send("email taken");
-      }
-      else
-      {
-        res.send(err.message);
-      }
-    } 
-    else 
-    {
-      const authenticate = User.authenticate();
-      authenticate(req.body.username, req.body.password, function(err, result, error) {
-        if(err)
-        {
-          res.send(err);
-        }
-        if(result)
-        {
-          passport.authenticate('local')(req, res, () => {
-            res.send('success');
-          })
-        }
-      })
-    }
-  })
-})
+app.post("/register",
+  passport.authenticate("local-signup", { session: true }),
+  (req, res) => {
+    res.status(200);
+    res.json({
+      user: req.user,
+    });
+  }
+);
 
 app.post("/logged_in", (req, res) =>
 {
