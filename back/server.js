@@ -65,15 +65,15 @@ app.get("/api/posts/:postId", async (req, res) =>
   {
     const voteCount = countVotes(await client.query("SELECT * FROM votes WHERE post_id = $1", [req.params.postId]));
 
-    const result = await client.query("SELECT * FROM posts WHERE post_id = $1", [req.params.postId]);
+    const result = await client.query("SELECT * FROM posts INNER JOIN users ON users.user_id=posts.author WHERE post_id = $1", [req.params.postId]);
     const post = result.rows[0];
     if(post.post_image)
     {
-      res.json({voteCount:voteCount, title: post.post_title, content: post.post_message, date: post.create_time, postId: post.post_id, author: post.author, img: post.post_image.toString("base64")});
+      res.json({voteCount:voteCount, title: post.post_title, content: post.post_message, date: post.create_time, postId: post.post_id, author: post.email, img: post.post_image.toString("base64")});
     }
     else
     {
-      res.json({voteCount:voteCount, title: post.post_title, content: post.post_message, date: post.create_time, postId: post.post_id, author: post.author});
+      res.json({voteCount:voteCount, title: post.post_title, content: post.post_message, date: post.create_time, postId: post.post_id, author: post.email});
     }
   }
   catch(err)
@@ -90,11 +90,11 @@ app.get("/api/posts", async (req, res) =>
     {
       if(post.post_image)
       {
-        response.push({title: post.post_title, content: post.post_message, date: post.create_time, postId: post.post_id, author: post.author, img: post.post_image.toString("base64")});
+        response.push({title: post.post_title, content: post.post_message, date: post.create_time, postId: post.post_id, author: post.email, img: post.post_image.toString("base64")});
       }
       else
       {
-        response.push({title: post.post_title, content: post.post_message, date: post.create_time, postId: post.post_id, author: post.author});
+        response.push({title: post.post_title, content: post.post_message, date: post.create_time, postId: post.post_id, author: post.email});
       }
     }
     res.json(response);
@@ -112,11 +112,11 @@ app.get("/api/my-posts/:userId", async (req, res) =>
         {
           if(post.post_image)
           {
-            response.push({title: post.post_title, content: post.post_message, date: post.create_time, postId: post.post_id, author: post.author, img: post.post_image.toString("base64")});
+            response.push({title: post.post_title, content: post.post_message, date: post.create_time, postId: post.post_id, author: post.email, img: post.post_image.toString("base64")});
           }
           else
           {
-            response.push({title: post.post_title, content: post.post_message, date: post.create_time, postId: post.post_id, author: post.author});
+            response.push({title: post.post_title, content: post.post_message, date: post.create_time, postId: post.post_id, author: post.email});
           }
         }
         res.json(response);
