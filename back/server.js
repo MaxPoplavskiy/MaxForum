@@ -80,7 +80,7 @@ app.get("/api/posts/:postId", (req, res) =>
 
 app.get("/api/posts", async (req, res) =>
 {
-    const posts = await client.query("SELECT * FROM posts");
+    const posts = await client.query("SELECT * FROM posts ORDER BY create_time DESC");
     const response = [];
     for(const post of posts.rows)  
     {
@@ -102,7 +102,7 @@ app.get("/api/my-posts/:userId", async (req, res) =>
     {
       if(req.params.userId === req.user.username)
       {
-        const posts = await client.query("SELECT * FROM posts WHERE author = $1", [req.user.id]);
+        const posts = await client.query("SELECT * FROM posts WHERE author = $1 ORDER BY create_time DESC", [req.user.id]);
         const response = [];
         for(const post of posts.rows)  
         {
