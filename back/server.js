@@ -78,30 +78,22 @@ app.get("/api/posts/:postId", (req, res) =>
   })
 });
 
-app.get("/api/posts", (req, res) =>
+app.get("/api/posts", async (req, res) =>
 {
-  Post.find({}).sort({date: -1})
-  .then((posts) =>
-  {
+    const posts = await client.query("SELECT * FROM posts");
     const response = [];
-    for(const post of posts)
+    for(const post of posts.rows)  
     {
-      const voteCount = post.votes.reduce(
-        (accumulator, currentValue) => accumulator + (currentValue.value ? 1 : -1),
-        0
-      );
-      if(post.image.data)
+      if(post.post_image)
       {
-        response.push({voteCount: voteCount, title: post.title, content: post.content, date: post.date, postId: post.id, author: post.author, img: post.image.data.toString("base64")});
+        response.push({title: post.post_title, content: post.post_message, date: post.create_time, postId: post.post_id, author: post.author, img: post.post_image.toString("base64")});
       }
       else
       {
-        response.push({voteCount: voteCount, title: post.title, content: post.content, date: post.date, postId: post.id, author: post.author});
+        response.push({title: post.post_title, content: post.post_message, date: post.create_time, postId: post.post_id, author: post.author});
       }
     }
-
     res.json(response);
-  })
 });
 
 app.get("/api/my-posts/:userId", async (req, res) =>
