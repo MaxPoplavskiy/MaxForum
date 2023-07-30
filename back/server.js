@@ -273,17 +273,12 @@ app.post("/api/posts/:postId/comments", async (req, res) => {
   }
 });
 
-app.delete("/api/posts/:postId", (req, res) => {
+app.delete("/api/posts/:postId", async (req, res) => {
   if(req.isAuthenticated())
   {
-    Post.deleteOne({_id: req.params.postId, author: req.user.username})
-    .then(() =>{
-      res.status(200);
-      res.send("Deleted");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    await client.query("DELETE FROM posts WHERE post_id = $1" , [req.params.postId]);
+    res.status(200);
+    res.send();
   }
   else
   {
@@ -299,41 +294,21 @@ app.patch("/api/edit/:postId", upload.single('image'), async (req, res) => {
     {
       if(req.file)
       {
-        Post.findOneAndUpdate({_id: req.params.postId, author: req.user.username}, 
-          { 
-            title: req.body.title, 
-            content: req.body.content, 
-            image: {
-                data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
-                contentType: 'image/png',
-          } 
-        })
-        .then(() => {
-          fs.unlink(path.join(__dirname + '/uploads/' + req.file.filename), () => {});
-        });
+        await client.query("UPDATE posts SET post_title=$1, post_message=$2, post_image=$3 WHERE post_id=$4", 
+          [req.body.title, req.body.content, fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)), req.params.postId]);
+        
+        fs.unlink(path.join(__dirname + '/uploads/' + req.file.filename), () => {});
 
       }
       else if(req.body.deleteImage)
       {
-        Post.findOneAndUpdate({_id: req.params.postId, author: req.user.username}, 
-          { 
-            title: req.body.title, 
-            content: req.body.content, 
-            image: {
-                data: null,
-                contentType: 'image/png',
-          } 
-        })
-        .then();
+        await client.query("UPDATE posts SET post_title=$1, post_message=$2, post_image=NULL WHERE post_id=$3", 
+          [req.body.title, req.body.content, req.params.postId]);
       }
       else
       {
-        Post.findOneAndUpdate({_id: req.params.postId, author: req.user.username}, 
-          { 
-            title: req.body.title, 
-            content: req.body.content, 
-        })
-        .then();
+        await client.query("UPDATE posts SET post_title=$1, post_message=$2 WHERE post_id=$3", 
+          [req.body.title, req.body.content, req.params.postId]);
       }
       
   
