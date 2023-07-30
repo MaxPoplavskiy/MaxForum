@@ -10,6 +10,22 @@ const Post = require("./src/model/post.jsx");
 const multer = require('multer');
 const fs = require("fs");
 const path = require('path');
+const Client = require('pg').Client;
+
+const client = new Client({
+  host: 'localhost',
+  port: 5432,
+  database: 'MaxForum',
+  user: 'postgres',
+  password: process.env.PASSWORD,
+});
+
+client.connect((err) => {
+  if(err)
+  {
+    console.log(err);
+  }
+});
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
