@@ -104,33 +104,26 @@ app.get("/api/posts", (req, res) =>
   })
 });
 
-app.get("/api/my-posts/:userId", (req, res) =>
+app.get("/api/my-posts/:userId", async (req, res) =>
 {
     if(req.isAuthenticated())
     {
       if(req.params.userId === req.user.username)
       {
-        Post.find({author: req.user.username}).sort({date: -1})
-        .then((posts) =>
+        const posts = await client.query("SELECT * FROM posts WHERE author = $1", [req.user.id]);
+        const response = [];
+        for(const post of posts.rows)  
         {
-          const response = [];
-          for(const post of posts)
+          if(post.post_image)
           {
-            const voteCount = post.votes.reduce(
-              (accumulator, currentValue) => accumulator + (currentValue.value ? 1 : -1),
-              0
-            );
-            if(post.image.data)
-            {
-              response.push({voteCount: voteCount, title: post.title, content: post.content, date: post.date, postId: post.id, author: post.author, img: post.image.data.toString("base64")});
-            }
-            else
-            {
-              response.push({voteCount: voteCount, title: post.title, content: post.content, date: post.date, postId: post.id, author: post.author});
-            }
+            response.push({title: post.post_title, content: post.post_message, date: post.create_time, postId: post.post_id, author: post.author, img: post.post_image.toString("base64")});
           }
-          res.json(response);
-        })
+          else
+          {
+            response.push({title: post.post_title, content: post.post_message, date: post.create_time, postId: post.post_id, author: post.author});
+          }
+        }
+        res.json(response);
       }
     }
     else
