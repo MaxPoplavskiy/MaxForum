@@ -17,6 +17,7 @@ import "./themes.css";
 import Cookies from "universal-cookie";
 import { SnackbarProvider } from 'notistack'
 import axios from 'axios';
+import { backendUrl } from './constants/backend';
 
 function App(props) {
   const cookies = new Cookies();
@@ -24,7 +25,7 @@ function App(props) {
 
   function checkAuthStatus()
   {
-    axios.post(window.location.origin + "/logged_in")
+    axios.post(backendUrl + "/logged_in")
     .then((response) => {
       setAuthStatus(response.data.status);
       cookies.set("last-login-status", response.data.status);
@@ -52,16 +53,6 @@ function App(props) {
       setTheme("light");
       cookies.set("theme", "light");
     }
-  }
-
-  function requireAuth(nextState, replace, next) {
-    if (!authStatus) {
-      replace({
-        pathname: "/login",
-        state: {nextPathname: nextState.location.pathname}
-      });
-    }
-    next();
   }
 
   return (

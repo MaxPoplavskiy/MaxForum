@@ -5,6 +5,7 @@ import { authStatusContext } from "../authStatusContext";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { backendUrl } from "../constants/backend";
 
 
 function Account(props)
@@ -14,7 +15,7 @@ function Account(props)
 
     function logOut()
     {
-        axios.post(window.location.origin + "/logout").then((response) =>
+        axios.post(backendUrl + "/logout").then((response) =>
         {
             checkAuthStatus();
             console.log(response);

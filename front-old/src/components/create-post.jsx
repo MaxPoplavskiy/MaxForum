@@ -5,6 +5,7 @@ import { useContext, useState } from "react";
 import axios from "axios";
 import { enqueueSnackbar } from 'notistack'
 import { useNavigate } from "react-router-dom";
+import { backendUrl } from "../constants/backend";
 
 function CreatePost(props)
 {
@@ -38,7 +39,7 @@ function CreatePost(props)
         formData.append("title", title);
         formData.append("content", content);
         
-        axios.post(window.location.origin + "/create", formData, {
+        axios.post(backendUrl + "/create", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
               },   

@@ -6,6 +6,7 @@ import PostCard from "./post-card";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { enqueueSnackbar } from 'notistack';
+import { backendUrl } from "../constants/backend";
 
 function Posts(props)
 {
@@ -19,7 +20,7 @@ function Posts(props)
 
     function deletePost(postId)
     {
-        axios.delete(window.location.origin + "/api/posts/" + postId)
+        axios.delete(backendUrl + "/api/posts/" + postId)
         .then((response) => {
             getPosts();
         })
@@ -30,7 +31,7 @@ function Posts(props)
 
     function getPosts()
     {
-        axios.get(window.location.origin + "/api" + window.location.pathname)
+        axios.get(backendUrl + "/api" + window.location.pathname)
         .then((response) => {
             setPosts(response.data);
             console.log(response.data);

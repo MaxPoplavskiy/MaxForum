@@ -6,6 +6,7 @@ import Comment from "./comment";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { enqueueSnackbar } from 'notistack';
+import { backendUrl } from "../constants/backend";
 
 function Post(props)
 {
@@ -18,7 +19,7 @@ function Post(props)
 
     function getCurrentVote()
     {
-        axios.get(window.location.origin + "/api" + window.location.pathname + "/is_voted")
+        axios.get(backendUrl + "/api" + window.location.pathname + "/is_voted")
         .then((response) => {
             setCurrentVote(response.data);
         })
@@ -31,7 +32,7 @@ function Post(props)
 
     function submitComment()
     {
-        axios.post(window.location.origin + "/api" + window.location.pathname + "/comments", {
+        axios.post(backendUrl + "/api" + window.location.pathname + "/comments", {
             content: comment,
         })
         .then((response) => {
@@ -44,7 +45,7 @@ function Post(props)
 
     function sendVote(vote)
     {
-        axios.put(window.location.origin + "/api" + window.location.pathname + "/votes", {
+        axios.put(backendUrl + "/api" + window.location.pathname + "/votes", {
             vote: vote,
         })
         .then((response) => {
@@ -57,7 +58,7 @@ function Post(props)
 
     function getComments()
     {
-        axios.get(window.location.origin + "/api" + window.location.pathname + "/comments")
+        axios.get(backendUrl + "/api" + window.location.pathname + "/comments")
         .then((response) =>
         {
             setComments(response.data);
@@ -71,7 +72,7 @@ function Post(props)
 
     function getPost()
     {
-        axios.get(window.location.origin + "/api" + window.location.pathname)
+        axios.get(backendUrl + "/api" + window.location.pathname)
         .then((response) => {
             setPost(response.data);
         });

@@ -5,6 +5,7 @@ import { useContext, useState } from "react";
 import axios from "axios";
 import { enqueueSnackbar } from 'notistack'
 import { useNavigate, useParams } from "react-router-dom";
+import { backendUrl } from "../constants/backend";
 
 function EditPost(props)
 {
@@ -60,7 +61,7 @@ function EditPost(props)
 
     function getPost()
     {
-        axios.get(window.location.origin + "/api/posts/" + postId)
+        axios.get(backendUrl + "/api/posts/" + postId)
         .then((response) => {
             setTitle(response.data.title);
             setContent(response.data.content);
@@ -83,7 +84,7 @@ function EditPost(props)
         formData.append("deleteImage", deleteImageStatus ? "true" : "");
         formData.append("content", content);
         
-        axios.patch(window.location.origin + "/api/edit/" + postId, formData, {
+        axios.patch(backendUrl + "/api/edit/" + postId, formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
               },   
@@ -108,7 +109,7 @@ function EditPost(props)
 
     useEffect(() => {
         checkImageShow();
-    }, [image, originalImage, deleteImageStatus]);
+    }, [image, originalImage, deleteImageStatus, checkImageShow]);
 
     useEffect(() => {
         getPost();
