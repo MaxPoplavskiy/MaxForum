@@ -14,4 +14,8 @@ injectGlobal`
   body { 
     margin: 0;
   }
+
+  * {
+    transition: color 0.5s ease, background-color 0.5s ease, border-color 0.5s ease;
+  }
 `

@@ -6,3 +6,6 @@ export const spacer = (theme: Theme) => css`
   border-bottom: 1px ${theme.colors.secondary} solid;
   margin: 0;
 `
+export const spacerThick = css`
+  border-bottom-width: 3px;
+`

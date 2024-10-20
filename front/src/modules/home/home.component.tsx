@@ -8,7 +8,7 @@ export const Home: React.FC = () => {
 
   return (
     <div css={container}>
-      <h1 css={title}>MAXFUDRAISER</h1>
+      <h1 css={title(theme)}>MAXFUDRAISER</h1>
       <Spacer className={spacer} />
       <p css={text(theme)}>
         MaxFundraiser is an innovative platform designed to transform charitable

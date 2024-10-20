@@ -11,9 +11,10 @@ export const container = css`
     flex-direction: column;
 `
 
-export const title = css`
+export const title = (theme: Theme) => css`
     font-size: ${sizes.xxxxl};
     margin-bottom: 0;
+    color: ${theme.colors.secondary};
 `
 export const spacer = css`
     width: 25%;

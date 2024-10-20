@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import "./footer.css";
 import { container, text } from "./footer.styles";
 import { useTheme } from "@emotion/react";
 
