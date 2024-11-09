@@ -33,3 +33,6 @@ export const image = css`
   max-height: 400px;
   border-radius: ${radius[2]};
 `;
+export const uploadImageText = (theme: Theme) => css`
+  color: ${theme.colors.secondary};
+`;

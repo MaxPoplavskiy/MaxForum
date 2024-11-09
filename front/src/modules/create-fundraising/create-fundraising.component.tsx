@@ -10,6 +10,7 @@ import {
   TextArea,
 } from "../../common/components";
 import {
+  blockTitle,
   column,
   container,
   form,
@@ -30,6 +31,7 @@ export function CreateFundraising() {
 
   const { address } = useAccount();
   const handleSubmit = useCallback(async () => {
+    if (!image) return
     if (address) {
       await createFundraising({
         title: titleValue,
@@ -37,9 +39,10 @@ export function CreateFundraising() {
         goal,
         duration,
         address,
+        file: image
       });
     }
-  }, [createFundraising, titleValue, description, goal, duration, address]);
+  }, [createFundraising, image, titleValue, description, goal, duration, address]);
 
   function titleChange(event: ChangeEvent<HTMLInputElement>) {
     setTitle(event.target.value);
@@ -63,7 +66,7 @@ export function CreateFundraising() {
       <div css={formContainer}>
         <div css={form}>
           <div css={column}>
-            <h2>
+            <h2 css={blockTitle(theme)}>
               Image
               <Spacer isThick={true} />
             </h2>
@@ -76,7 +79,7 @@ export function CreateFundraising() {
             />
           </div>
           <div css={column}>
-            <h2>
+            <h2 css={blockTitle(theme)}>
               Title
               <Spacer isThick={true} />
             </h2>
@@ -84,14 +87,14 @@ export function CreateFundraising() {
 
             <div css={middleInputContainer}>
               <div>
-                <h2>
+                <h2 css={blockTitle(theme)}>
                   Goal
                   <Spacer isThick={true} />
                 </h2>
                 <NumberInput defaultValue={0} min={0} onChange={setGoal} />
               </div>
               <div>
-                <h2>
+                <h2 css={blockTitle(theme)}>
                   Duration in Days
                   <Spacer isThick={true} />
                 </h2>
@@ -99,7 +102,7 @@ export function CreateFundraising() {
               </div>
             </div>
 
-            <h2>
+            <h2 css={blockTitle(theme)}>
               Description
               <Spacer isThick={true} />
             </h2>

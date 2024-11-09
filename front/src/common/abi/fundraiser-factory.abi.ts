@@ -1,4 +1,6 @@
-export const FundraiserFactoryAbi = [
+import { Abi } from "viem";
+
+export const FundraiserFactoryAbi: Abi = [
   {
     inputs: [],
     name: "fundraisers",
@@ -37,6 +39,11 @@ export const FundraiserFactoryAbi = [
       {
         internalType: "string",
         name: "_description",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "_uri",
         type: "string",
       },
     ],

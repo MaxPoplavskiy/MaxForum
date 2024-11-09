@@ -1,11 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { PostModule } from './modules/post/post.module';
+import { ConfigModule } from '@nestjs/config';
+import { PinataModule } from './modules/pinata/pinata.module';
 
 @Module({
-  imports: [PostModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [ConfigModule.forRoot(), PinataModule],
 })
 export class AppModule {}

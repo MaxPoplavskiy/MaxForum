@@ -14,9 +14,10 @@ export const buttonContainer = css`
   flex-direction: column;
   margin-top: 2rem;
   width: 15%;
+  gap: ${spaces[3]};
 `;
 export const spacer = css`
   width: 25%;
   align-self: center;
-  margin: ${spaces[3]} 0 ${spaces[10]};
+  margin: ${spaces[1]} 0 ${spaces[5]};
 `;

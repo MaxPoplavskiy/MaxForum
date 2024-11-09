@@ -27,7 +27,7 @@ export const Header: React.FC = () => {
           style={activeStyle}
           css={item(theme)}
         >
-          My Fundraising
+          My Fundraisers
         </NavLink>
         <NavLink to={`${RouterKey.FUNDRAISING.INDEX}/${RouterKey.FUNDRAISING.CREATE}`} style={activeStyle} css={item(theme)}>
           Create

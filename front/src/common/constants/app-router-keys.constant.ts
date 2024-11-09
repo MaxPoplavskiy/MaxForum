@@ -6,6 +6,7 @@ export const RouterKey = {
   FUNDRAISING: {
     INDEX: '/fundraisers',
     MY_FUNDRAISERS: 'my-fundraisers',
+    ID: ':fundraiserAddress',
     CREATE: "create"
   }
 }

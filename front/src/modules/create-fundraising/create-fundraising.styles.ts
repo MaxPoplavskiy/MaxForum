@@ -34,6 +34,9 @@ export const column = css`
   flex-direction: column;
   flex-grow: 1;
 `;
+export const blockTitle = (theme: Theme) => css`
+  color: ${theme.colors.secondary};
+`
 export const middleInputContainer = css`
   display: flex;
   gap: ${spaces[5]};

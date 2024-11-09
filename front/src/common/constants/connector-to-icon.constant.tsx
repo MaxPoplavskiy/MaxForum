@@ -1,5 +1,7 @@
-import MetaMask from "../../assets/icons/metamask.svg?react";
+import Coinbase from "../../assets/icons/coinbase.svg?react";
+import MetaMask from "../../assets/icons/MetaMask.png";
 
 export const connectorToIcon: Record<string, JSX.Element> = {
-  MetaMask: <MetaMask width={25} height={25} />,
+  "Coinbase Wallet": <Coinbase width={25} height={25} />,
+  MetaMask: <img src={MetaMask} width={25} height={25} />
 };

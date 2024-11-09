@@ -5,6 +5,7 @@ import {
   image,
   previewContainer,
   uploadContainer,
+  uploadImageText,
 } from "./file-upload.styles";
 
 type Properties = Omit<
@@ -29,7 +30,7 @@ export const FileUpload: React.FC<Properties> = ({ ...rest }) => {
       ) : (
         <div css={uploadContainer(theme)}>
           <label htmlFor={rest.id}>
-            <p>Upload Image</p>
+            <p css={uploadImageText(theme)}>Upload Image</p>
           </label>
         </div>
       )}

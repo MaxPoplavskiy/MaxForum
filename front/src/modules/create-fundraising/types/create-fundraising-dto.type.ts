@@ -6,4 +6,5 @@ export type CreateFundraisingDTO = {
   address: Address,
   goal: number,
   duration: number
+  file: File
 }

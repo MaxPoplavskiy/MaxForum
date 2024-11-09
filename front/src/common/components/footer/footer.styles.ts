@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { Theme } from "../../types/theme.type";
-import { JosefinSans } from "../../styles";
+import { JosefinSans, weights } from "../../styles";
 
 export const container = (theme: Theme) => css`
     background-color: ${theme.colors.primary};
@@ -14,4 +14,5 @@ export const container = (theme: Theme) => css`
 export const text = (theme: Theme) => css`
     ${JosefinSans}
     color: ${theme.colors.secondary};
+    font-weight: ${weights.semiBold};
 `
