@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 import {
+  colors,
   JosefinSans,
   Orbitron,
   radius,
@@ -8,6 +9,7 @@ import {
   weights,
 } from "../../../../common/styles";
 import { Theme } from "../../../../common/types";
+import { FundraiserStatusValueToString } from "../../../../common/types/fundraiser-status.type";
 
 export const container = (theme: Theme) => css`
   display: flex;
@@ -55,6 +57,15 @@ export const descriptionStyles = (theme: Theme) => css`
   font-weight: ${weights.normal};
   font-size: ${sizes.m};
 `;
+export const statusText = (status: string) => {
+  let color;
+  if (status === FundraiserStatusValueToString[0]) color = colors.black;
+  else if (status === FundraiserStatusValueToString[1]) color = colors.green;
+  else if (status === FundraiserStatusValueToString[2]) color = colors.red;
+  return css`
+    color: ${color};
+  `;
+};
 export const lowerBody = css`
   display: grid;
   grid-template-columns: 30% 40% 30%;

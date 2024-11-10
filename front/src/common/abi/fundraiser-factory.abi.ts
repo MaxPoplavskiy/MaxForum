@@ -2,17 +2,15 @@ import { Abi } from "viem";
 
 export const FundraiserFactoryAbi: Abi = [
   {
-    inputs: [],
-    name: "fundraisers",
-    outputs: [
+    inputs: [
       {
-        internalType: "contract Fundraiser[]",
-        name: "",
-        type: "address[]",
+        internalType: "address",
+        name: "_administrationAddress",
+        type: "address",
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: "nonpayable",
+    type: "constructor",
   },
   {
     inputs: [
@@ -21,31 +19,11 @@ export const FundraiserFactoryAbi: Abi = [
         name: "_beneficiary",
         type: "address",
       },
-      {
-        internalType: "uint256",
-        name: "_goal",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "_durationInDays",
-        type: "uint256",
-      },
-      {
-        internalType: "string",
-        name: "_title",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "_description",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "_uri",
-        type: "string",
-      },
+      { internalType: "uint256", name: "_goal", type: "uint256" },
+      { internalType: "uint256", name: "_durationInDays", type: "uint256" },
+      { internalType: "string", name: "_title", type: "string" },
+      { internalType: "string", name: "_description", type: "string" },
+      { internalType: "string", name: "_uri", type: "string" },
     ],
     name: "createFundraiser",
     outputs: [],
@@ -56,11 +34,7 @@ export const FundraiserFactoryAbi: Abi = [
     inputs: [],
     name: "getFundraisers",
     outputs: [
-      {
-        internalType: "contract Fundraiser[]",
-        name: "",
-        type: "address[]",
-      },
+      { internalType: "contract Fundraiser[]", name: "", type: "address[]" },
     ],
     stateMutability: "view",
     type: "function",
@@ -68,12 +42,24 @@ export const FundraiserFactoryAbi: Abi = [
   {
     inputs: [],
     name: "getFundraiserCount",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "administration",
     outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
+      { internalType: "contract Administration", name: "", type: "address" },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    name: "fundraisers",
+    outputs: [
+      { internalType: "contract Fundraiser", name: "", type: "address" },
     ],
     stateMutability: "view",
     type: "function",
@@ -82,13 +68,13 @@ export const FundraiserFactoryAbi: Abi = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
+        indexed: true,
         internalType: "address",
         name: "fundraiserAddress",
         type: "address",
       },
       {
-        indexed: false,
+        indexed: true,
         internalType: "address",
         name: "beneficiary",
         type: "address",

@@ -21,6 +21,7 @@
     "Licence",
     "nonselected",
     "stablecoins",
+    "upvote",
     "wagmi"
   ],
   "[prisma]": {

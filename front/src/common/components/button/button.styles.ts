@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { JosefinSans, radius, sizes, spaces, weights } from "../../styles";
+import { colors, JosefinSans, radius, sizes, spaces, weights } from "../../styles";
 import { Theme } from "../../types";
 
 export const button = (theme: Theme) => css`
@@ -18,6 +18,7 @@ export const button = (theme: Theme) => css`
   grid-template-columns: 1fr max-content 1fr;
   align-items:center;
   gap: ${spaces[2]};
+  height: fit-content;
   justify-content: center
 `;
 
@@ -25,4 +26,20 @@ export const transparentButton = (theme: Theme) => css`
   background-color: transparent;
   color: ${theme.colors.secondary};
   border-color: ${theme.colors.secondary};
+`;
+
+export const approveButton = (theme: Theme) => css`
+  background-color: ${colors.green};
+  border-color: ${theme.colors.secondary};
+  color: ${colors.black};
+  min-width: 120px;
+  width: 120px;
+`;
+
+export const declineButton = (theme: Theme) => css`
+  background-color: ${colors.red};
+  border-color: ${theme.colors.secondary};
+  color: ${colors.black};
+  min-width: 120px;
+  width: 120px;
 `;

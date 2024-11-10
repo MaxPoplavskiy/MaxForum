@@ -10,10 +10,12 @@ export type Fundraiser = {
 export type ExtendedFundraiser = Omit<Fundraiser, 'duration' | 'goal'> & {
   address: Address,
   image: string,
+  status: number,
   beneficiary: Address
   createdAt: Date
   deadline: Date
-  goal: BigInt
-  totalDonations: BigInt
-  balance: BigInt
+  goal: bigint
+  totalDonations: bigint
+  balance: bigint
+  declineReason: string
 }

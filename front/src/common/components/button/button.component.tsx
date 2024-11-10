@@ -1,18 +1,35 @@
 import { useTheme } from "@emotion/react";
-import React from "react";
-import { button, transparentButton } from "./button.styles";
+import React, { useMemo } from "react";
+import { ButtonType } from "../../types/buttom.type";
+import {
+  approveButton,
+  button,
+  declineButton,
+  transparentButton,
+} from "./button.styles";
 
 type Properties = {
-  isTransparent?: boolean;
-  text: string
-  onClick?: () => void
-  leftIcon?: JSX.Element
+  type?: ButtonType;
+  text: string;
+  onClick?: () => void;
+  leftIcon?: JSX.Element;
 };
-export const Button: React.FC<Properties> = ({ isTransparent = false, text, onClick, leftIcon }) => {
+export const Button: React.FC<Properties> = ({
+  type = ButtonType.FILLED,
+  text,
+  onClick,
+  leftIcon,
+}) => {
   const theme = useTheme();
 
-  return (  
-    <button onClick={onClick} css={[button(theme), isTransparent && transparentButton(theme)]}>
+  const typeStyles = useMemo(() => {
+    if (type === ButtonType.TRANSPARENT) return transparentButton(theme);
+    if (type === ButtonType.APPROVE) return approveButton(theme);
+    if (type === ButtonType.DECLINE) return declineButton(theme)
+  }, [type, theme]);
+
+  return (
+    <button onClick={onClick} css={[button(theme), typeStyles]}>
       {leftIcon ?? <div></div>}
       {text}
     </button>

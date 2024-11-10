@@ -1,5 +1,6 @@
 export * from "./button";
 export * from "./chain-check-wrapper";
+export * from "./dropdown";
 export * from "./file-upload";
 export * from "./footer";
 export * from "./header";

@@ -16,6 +16,16 @@ export const buttonContainer = css`
   width: 15%;
   gap: ${spaces[3]};
 `;
+
+export const accountInfoContainer = css`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  h5 {
+    margin: 5px;
+  }
+`;
 export const spacer = css`
   width: 25%;
   align-self: center;

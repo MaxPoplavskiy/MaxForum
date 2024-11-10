@@ -1,3 +1,3 @@
 import { Address } from "viem";
 
-export type FundraiserContractDetailed = [Address, BigInt, BigInt, BigInt, BigInt, BigInt, string, string, string]
+export type FundraiserContractDetailed = [number, Address, bigint, bigint, bigint, bigint, bigint, string, string, string, string]

@@ -11,6 +11,7 @@ import {
   lowerBody,
   moreContainer,
   moreLink,
+  statusText,
   titleContainer,
   titleSpacer,
   titleStyles,
@@ -21,7 +22,8 @@ type Properties = {
   title: string;
   description: string;
   image: string;
-  goal: BigInt;
+  goal: bigint;
+  status: string;
   address: string;
   deadline: Date
 };
@@ -32,7 +34,8 @@ export const FundraiserCard: React.FC<Properties> = ({
   image,
   address,
   goal,
-  deadline
+  deadline,
+  status
 }) => {
   const theme = useTheme();
 
@@ -55,6 +58,7 @@ export const FundraiserCard: React.FC<Properties> = ({
         <p css={descriptionStyles(theme)}>{description}</p>
         <p css={descriptionStyles(theme)}>Goal: {goal.toString()}</p>
         <p css={descriptionStyles(theme)}>Deadline: {deadline.toLocaleDateString()}</p>
+        <p css={descriptionStyles(theme)}>Status: <span css={statusText(status)}>{status}</span></p>
       </div>
       <div css={lowerBody}>
         <div></div>

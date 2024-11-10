@@ -12,16 +12,26 @@ type Return = {
 
 export const useReadFundraiser = (address: Address | undefined): Return => {
   const [fundraiser, setFundraiser] = useState<ExtendedFundraiser>();
-  const { data } = useReadContract({
+  const { data, refetch } = useReadContract({
     abi: FundraiserAbi,
     functionName: "getDetails",
-    address,
+    address
   });
 
   useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [refetch]);
+
+  useEffect(() => {
+
     const fetchFundraiser = async () => {
       if(!address) return
       const [
+        status,
         beneficiary,
         goal,
         deadline,
@@ -31,11 +41,13 @@ export const useReadFundraiser = (address: Address | undefined): Return => {
         title,
         description,
         hash,
+        declineReason,
       ] = data as FundraiserContractDetailed;
 
       const image = await pinataService.hashToImageLink(hash);
 
       setFundraiser({
+        status,
         beneficiary,
         goal: goal,
         deadline: new Date(Number(deadline) * 1000),
@@ -46,6 +58,7 @@ export const useReadFundraiser = (address: Address | undefined): Return => {
         description,
         image,
         address,
+        declineReason
       });
     };
 

@@ -4,6 +4,7 @@ import { useReadContract, useReadContracts } from "wagmi";
 import { FundraiserAbi, FundraiserFactoryAbi } from "../../../common/abi";
 import { ExtendedFundraiser } from "../../../common/types";
 import { FundraiserContractDetailed } from "../../../common/types/fundraiser-contract-detailed.type";
+import { FundraiserStatusFilterValue } from "../../../common/types/fundraiser-status.type";
 import { pinataService } from "../../../services/pinata/pinata.service";
 
 const { VITE_FUNDRAISER_FACTORY } = import.meta.env;
@@ -21,25 +22,35 @@ const readFundraiser = (address: Address) => {
 };
 
 export const useReadFundraisers = (
-  filterAccount: string | undefined
+  filterAccount: string | undefined,
+  filterStatus: FundraiserStatusFilterValue = FundraiserStatusFilterValue.ALL
 ): Return => {
   const [fundraisers, setFundraisers] = useState<ExtendedFundraiser[]>([]);
-  const { data } = useReadContract({
+  const { data, refetch } = useReadContract({
     abi: FundraiserFactoryAbi,
     functionName: "getFundraisers",
     address: VITE_FUNDRAISER_FACTORY,
   });
 
-  const { data: detailedData } = useReadContracts({
+  const { data: detailedData, refetch: refetchMany } = useReadContracts({
     contracts: ((data ?? []) as Address[]).map((item) => readFundraiser(item)),
   });
 
   useEffect(() => {
-    if (!detailedData) return;
+    const interval = setInterval(async () => {
+      await refetch();
+      await refetchMany();
+    }, 10000);
 
+    return () => clearInterval(interval);
+  }, [refetch, refetchMany, data]);
+
+  useEffect(() => {
+    if (!detailedData) return;
     const fetchFundraisers = async () => {
       const promises = detailedData.map(async (item, i) => {
         const [
+          status,
           beneficiary,
           goal,
           deadline,
@@ -49,10 +60,10 @@ export const useReadFundraisers = (
           title,
           description,
           hash,
-        ] = Object.values(item.result as any) as FundraiserContractDetailed;
+        ] = Object.values(item.result as object) as FundraiserContractDetailed;
 
         const image = await pinataService.hashToImageLink(hash);
-        
+
         return {
           beneficiary,
           goal: goal,
@@ -63,6 +74,7 @@ export const useReadFundraisers = (
           title,
           description,
           image,
+          status,
           address: (data as Address[])[i],
         };
       });
@@ -79,13 +91,17 @@ export const useReadFundraisers = (
     };
 
     fetchFundraisers();
-  }, [detailedData]);
+  }, [data, detailedData]);
 
   const filteredFundraisers = useMemo(() => {
-    return filterAccount
+    const accountFilter = filterAccount
       ? fundraisers.filter((item) => item.beneficiary === filterAccount)
       : fundraisers;
-  }, [filterAccount, fundraisers]);
+
+    return filterStatus !== FundraiserStatusFilterValue.ALL
+      ? accountFilter.filter((item) => item.status === Number(filterStatus))
+      : accountFilter;
+  }, [filterAccount, fundraisers, filterStatus]);
 
   return {
     fundraisers: (filteredFundraisers as ExtendedFundraiser[]) ?? [],

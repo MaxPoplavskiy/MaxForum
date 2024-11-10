@@ -21,6 +21,6 @@ export class PinataController {
   })
   @UseInterceptors(FileInterceptor('file'))
   public async uploadFile(@UploadedFile() file: Express.Multer.File): Promise<UploadToIpfsResponse> {
-    return this.pinataService.up  loadFile({ file });
+    return this.pinataService.uploadFile({ file });
   }
 }
