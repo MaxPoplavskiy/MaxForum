@@ -1,15 +1,16 @@
 import { useTheme } from "@emotion/react";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Address } from "viem";
 import Upvote from "../../assets/icons/upvote.svg?react";
 import { Button, NumberInput, Spacer, TextArea } from "../../common/components";
 import { useAdministrationStatusHook } from "../../common/hooks";
-import { ButtonType } from "../../common/types/buttom.type";
+import { ButtonType } from "../../common/types/button.type";
 import {
   FundraiserStatusValue,
   FundraiserStatusValueToString,
 } from "../../common/types/fundraiser-status.type";
+import { CommentItem } from "./components/comment-item/comment-item.component";
 import { DonationItem } from "./components/donation-item/donation-item.component";
 import {
   bottomContainer,
@@ -25,22 +26,30 @@ import {
   image,
   imageContainer,
   infoText,
+  sectionSelection,
+  sectionSelectionContainer,
+  sectionSelectionText,
   statusText,
   text,
   title,
   upvoteArrow,
   upvoteContainer,
 } from "./fundraiser.styles";
+import { useCommentFundraiser } from "./hooks/use-comment-fundraiser.hook";
 import { useDonateFundraiser } from "./hooks/use-donate-fundraiser.hook";
 import { useModerateFundraiser } from "./hooks/use-moderate-fundraiser.hook";
 import { useReadFundraiser } from "./hooks/use-read-fundraiser.hook";
 import { useVoteFundraiser } from "./hooks/use-vote-fundraiser.hook";
+import { Section } from "./types/section.type";
 
 export const Fundraiser: React.FC = () => {
   const { isAdmin } = useAdministrationStatusHook();
   const { fundraiserAddress } = useParams();
   const { fundraiser } = useReadFundraiser(fundraiserAddress as Address);
   const { donate, donations } = useDonateFundraiser(
+    fundraiserAddress as Address
+  );
+  const { comment: commentFundraiser, comments } = useCommentFundraiser(
     fundraiserAddress as Address
   );
   const { upvote, upvoteCount, isVoted } = useVoteFundraiser(
@@ -51,8 +60,15 @@ export const Fundraiser: React.FC = () => {
   );
 
   const [declineReason, setDeclineReason] = useState("");
+  const [selectedSection, setSelectedSection] = useState<Section>(
+    Section.DONATIONS
+  );
   const [comment, setComment] = useState("");
   const [donateAmount, setDonateAmount] = useState(0);
+
+  useEffect(() => {
+    setComment("");
+  }, [selectedSection]);
 
   const theme = useTheme();
 
@@ -128,34 +144,75 @@ export const Fundraiser: React.FC = () => {
         <Spacer className={bottomSpacer} />
       </div>
       {fundraiser.status === FundraiserStatusValue.APPROVED && (
-        <div css={bottomDonationContainer}>
-          <div css={buttonDonateContainer}>
-            <div css={buttonDonateLeftContainer}>
-              <Button
-                onClick={() => donate(donateAmount, comment)}
-                type={ButtonType.FILLED}
-                text="Donate"
-              />
-              <NumberInput
-                defaultValue={0}
-                min={0}
-                onChange={setDonateAmount}
-              />
-            </div>
-            <TextArea placeholder="Enter comment" onChange={commentChange} />
+        <div css={sectionSelectionContainer}>
+          <div css={sectionSelection}>
+            <h1
+              onClick={() => setSelectedSection(Section.DONATIONS)}
+              css={sectionSelectionText(selectedSection === Section.DONATIONS)}
+            >
+              Donations
+            </h1>
+            <h1
+              onClick={() => setSelectedSection(Section.COMMENTS)}
+              css={sectionSelectionText(selectedSection === Section.COMMENTS)}
+            >
+              Comments
+            </h1>
           </div>
-          {donations.map((item) => (
-            <>
-              <DonationItem
-                comment={item.comment}
-                amount={item.amount}
-                address={item.sender}
-              />
-              <Spacer />
-            </>
-          ))}
+          <Spacer />
         </div>
       )}
+      {fundraiser.status === FundraiserStatusValue.APPROVED &&
+        selectedSection === Section.DONATIONS && (
+          <div css={bottomDonationContainer}>
+            <div css={buttonDonateContainer}>
+              <div css={buttonDonateLeftContainer}>
+                <Button
+                  onClick={() => donate(donateAmount, comment)}
+                  type={ButtonType.FILLED}
+                  text="Donate"
+                />
+                <NumberInput
+                  defaultValue={0}
+                  min={0}
+                  onChange={setDonateAmount}
+                />
+              </div>
+              <TextArea placeholder="Enter comment" onChange={commentChange} />
+            </div>
+            {donations.map((item) => (
+              <>
+                <DonationItem
+                  comment={item.comment}
+                  amount={item.amount}
+                  address={item.sender}
+                />
+                <Spacer />
+              </>
+            ))}
+          </div>
+        )}
+      {fundraiser.status === FundraiserStatusValue.APPROVED &&
+        selectedSection === Section.COMMENTS && (
+          <div css={bottomDonationContainer}>
+            <div css={buttonDonateContainer}>
+              <div css={buttonDonateLeftContainer}>
+                <Button
+                  onClick={() => commentFundraiser(comment)}
+                  type={ButtonType.FILLED}
+                  text="Send comment"
+                />
+              </div>
+              <TextArea placeholder="Enter comment" onChange={commentChange} />
+            </div>
+            {comments.map((item) => (
+              <>
+                <CommentItem comment={item.comment} address={item.sender} />
+                <Spacer />
+              </>
+            ))}
+          </div>
+        )}
       {isAdmin && fundraiser.status === FundraiserStatusValue.PENDING && (
         <div css={buttonModerationContainer}>
           <Button onClick={approve} type={ButtonType.APPROVE} text="Approve" />

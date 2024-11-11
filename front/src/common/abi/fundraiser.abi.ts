@@ -50,6 +50,19 @@ export const FundraiserAbi: Abi = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "string",
+        name: "comment",
+        type: "string",
+      },
+    ],
+    name: "comment",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     anonymous: false,
     inputs: [
       {
@@ -72,6 +85,25 @@ export const FundraiserAbi: Abi = [
       },
     ],
     name: "DonationReceived",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "sender",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "comment",
+        type: "string",
+      },
+    ],
+    name: "CommentCreated",
     type: "event",
   },
   {
@@ -281,6 +313,31 @@ export const FundraiserAbi: Abi = [
             name: "amount",
             type: "uint256",
           },
+          {
+            internalType: "string",
+            name: "comment",
+            type: "string",
+          },
+          {
+            internalType: "address",
+            name: "sender",
+            type: "address",
+          },
+        ],
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getAllComments",
+    outputs: [
+      {
+        internalType: "struct Comment[]",
+        name: "",
+        type: "tuple[]",
+        components: [
           {
             internalType: "string",
             name: "comment",

@@ -87,6 +87,16 @@ export const infoText = (theme: Theme) => css`
 export const bottomSpacer = css`
   grid-column: span 3;
 `;
+export const sectionSelectionContainer = css`
+  width: 70%
+`
+export const sectionSelection = css`
+  display: flex;
+  justify-content: space-around;
+`
+export const sectionSelectionText = (isSelect: boolean) => css`
+  font-weight: ${isSelect ? weights.bold : weights.light};
+`
 export const bottomDonationContainer = css`
   width: 70%;
 `;

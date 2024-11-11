@@ -9,28 +9,24 @@ export const container = css`
   gap: ${spaces[3]};
   align-items: center;
   flex-direction: column;
+  width: 100%;
 `;
-export const buttonContainer = css`
+export const content = css`
   display: flex;
+  width: fit-content;
+  width: 500px;
   flex-direction: column;
-  margin-top: 2rem;
-  width: 15%;
   gap: ${spaces[3]};
 `;
-
-export const accountInfoContainer = (theme: Theme) =>  css`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: ${spaces[1]};
+export const requestInfo = (theme: Theme) => css`
   color: ${theme.colors.secondary};
-
-  h5 {
-    margin: 3px;
-  }
 `;
-export const spacer = css`
-  width: 25%;
-  align-self: center;
-  margin: ${spaces[1]} 0 ${spaces[5]};
+export const buttonsContainer = css`
+  display: flex;
+  justify-content: space-between;
+
+  gap: ${spaces[3]};
+  button {
+    flex: 1;
+  }
 `;

@@ -1,8 +1,8 @@
 import React from "react";
 import { useConnect } from "wagmi";
-import { Button } from "../button";
 import { connectorToIcon } from "../../constants/connector-to-icon.constant";
-import { ButtonType } from "../../types/buttom.type";
+import { ButtonType } from "../../types/button.type";
+import { Button } from "../button";
 
 export const WalletOptions: React.FC = () => {
   const { connectors, connect } = useConnect();

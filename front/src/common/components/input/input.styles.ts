@@ -4,6 +4,7 @@ import { Theme } from "../../types";
 
 export const input = (theme: Theme) => css`
   ${JosefinSans}
+  box-sizing: border-box;
   font-weight: ${weights.semiBold};
   font-size: ${sizes.xl};
   background-color: ${theme.colors.primary};

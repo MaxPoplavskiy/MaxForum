@@ -1,6 +1,6 @@
 import { useTheme } from "@emotion/react";
 import React, { useMemo } from "react";
-import { ButtonType } from "../../types/buttom.type";
+import { ButtonType } from "../../types/button.type";
 import {
   approveButton,
   button,
@@ -25,7 +25,7 @@ export const Button: React.FC<Properties> = ({
   const typeStyles = useMemo(() => {
     if (type === ButtonType.TRANSPARENT) return transparentButton(theme);
     if (type === ButtonType.APPROVE) return approveButton(theme);
-    if (type === ButtonType.DECLINE) return declineButton(theme)
+    if (type === ButtonType.DECLINE) return declineButton(theme);
   }, [type, theme]);
 
   return (
