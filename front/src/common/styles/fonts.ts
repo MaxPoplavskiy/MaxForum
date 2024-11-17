@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 
 export const Orbitron = css`
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Orbitron', "Orbitron-Bold", sans-serif;
 `
 
 export const JosefinSans = css`

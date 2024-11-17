@@ -23,7 +23,8 @@ const readFundraiser = (address: Address) => {
 
 export const useReadFundraisers = (
   filterAccount: string | undefined,
-  filterStatus: FundraiserStatusFilterValue = FundraiserStatusFilterValue.ALL
+  filterStatus: FundraiserStatusFilterValue = FundraiserStatusFilterValue.ALL,
+  filterName: string = ''
 ): Return => {
   const [fundraisers, setFundraisers] = useState<ExtendedFundraiser[]>([]);
   const { data, refetch } = useReadContract({
@@ -98,10 +99,16 @@ export const useReadFundraisers = (
       ? fundraisers.filter((item) => item.beneficiary === filterAccount)
       : fundraisers;
 
-    return filterStatus !== FundraiserStatusFilterValue.ALL
+    const statusFilter = filterStatus !== FundraiserStatusFilterValue.ALL
       ? accountFilter.filter((item) => item.status === Number(filterStatus))
       : accountFilter;
-  }, [filterAccount, fundraisers, filterStatus]);
+
+    const nameFilter = filterName !== ''
+    ? statusFilter.filter((item) => item.title.includes(filterName))
+    : statusFilter;
+
+    return nameFilter
+  }, [filterName, filterAccount, fundraisers, filterStatus]);
 
   return {
     fundraisers: (filteredFundraisers as ExtendedFundraiser[]) ?? [],

@@ -2,7 +2,6 @@ import { useCallback, useEffect } from "react";
 import { useReadContract, useWriteContract } from "wagmi";
 import { AdministrationAbi } from "../../../common/abi";
 import { BenefactorRequest } from "../../../common/types";
-import { BenefactorRequestArray, benefactorRequestToObject } from "../../../common/utils/transaction-read-array-to-object.utils";
 
 type Return = {
   approve: () => void;
@@ -34,16 +33,13 @@ export const useModerateBenefactorRequest = (): Return => {
     [writeContractAsync]
   );
 
-  const approve = useCallback(
-    async () => {
-      await writeContractAsync({
-        abi: AdministrationAbi,
-        address: VITE_ADMINISTRATOR_CONTRACT,
-        functionName: "giveBenefactorToLast",
-      });
-    },
-    [writeContractAsync]
-  );
+  const approve = useCallback(async () => {
+    await writeContractAsync({
+      abi: AdministrationAbi,
+      address: VITE_ADMINISTRATOR_CONTRACT,
+      functionName: "giveBenefactorToLast",
+    });
+  }, [writeContractAsync]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -52,7 +48,7 @@ export const useModerateBenefactorRequest = (): Return => {
 
     return () => clearInterval(interval);
   }, [refetchRequest]);
-  
+
   return {
     decline,
     approve,

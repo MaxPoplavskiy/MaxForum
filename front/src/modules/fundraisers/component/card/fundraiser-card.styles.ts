@@ -57,9 +57,9 @@ export const descriptionStyles = (theme: Theme) => css`
   font-weight: ${weights.normal};
   font-size: ${sizes.m};
 `;
-export const statusText = (status: string) => {
+export const statusText = (theme: Theme, status: string) => {
   let color;
-  if (status === FundraiserStatusValueToString[0]) color = colors.black;
+  if (status === FundraiserStatusValueToString[0]) color = theme.colors.secondary;
   else if (status === FundraiserStatusValueToString[1]) color = colors.green;
   else if (status === FundraiserStatusValueToString[2]) color = colors.red;
   return css`

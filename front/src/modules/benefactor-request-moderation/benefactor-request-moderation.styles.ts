@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { spaces } from "../../common/styles";
+import { sizes, spaces } from "../../common/styles";
 import { Theme } from "../../common/types";
 
 export const container = css`
@@ -20,6 +20,10 @@ export const content = css`
 `;
 export const requestInfo = (theme: Theme) => css`
   color: ${theme.colors.secondary};
+
+  span {
+    font-size: ${sizes.m};
+  }
 `;
 export const buttonsContainer = css`
   display: flex;

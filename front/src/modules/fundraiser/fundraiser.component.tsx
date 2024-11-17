@@ -1,9 +1,17 @@
 import { useTheme } from "@emotion/react";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import Dialog from "rc-dialog";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Address } from "viem";
 import Upvote from "../../assets/icons/upvote.svg?react";
-import { Button, NumberInput, Spacer, TextArea } from "../../common/components";
+import {
+  Button,
+  DocumentContainer,
+  FundraiserCertificate,
+  NumberInput,
+  Spacer,
+  TextArea,
+} from "../../common/components";
 import { useAdministrationStatusHook } from "../../common/hooks";
 import { ButtonType } from "../../common/types/button.type";
 import {
@@ -19,9 +27,13 @@ import {
   buttonDonateContainer,
   buttonDonateLeftContainer,
   buttonModerationContainer,
+  certificateButton,
+  certificateDownloadButton,
   container,
   declineModerationContainer,
+  declineReasonContainer,
   description,
+  dialog,
   fundraiserGrid,
   image,
   imageContainer,
@@ -35,6 +47,7 @@ import {
   upvoteArrow,
   upvoteContainer,
 } from "./fundraiser.styles";
+import { useCertificate } from "./hooks/use-certificate.hook";
 import { useCommentFundraiser } from "./hooks/use-comment-fundraiser.hook";
 import { useDonateFundraiser } from "./hooks/use-donate-fundraiser.hook";
 import { useModerateFundraiser } from "./hooks/use-moderate-fundraiser.hook";
@@ -72,6 +85,9 @@ export const Fundraiser: React.FC = () => {
 
   const theme = useTheme();
 
+  const certificateRef = useRef(null);
+  const { getCertificate } = useCertificate(certificateRef);
+
   function reasonChange(event: ChangeEvent<HTMLTextAreaElement>) {
     setDeclineReason(event.target.value);
   }
@@ -79,6 +95,8 @@ export const Fundraiser: React.FC = () => {
   function commentChange(event: ChangeEvent<HTMLTextAreaElement>) {
     setComment(event.target.value);
   }
+
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   if (!fundraiser) {
     return <></>;
@@ -105,13 +123,10 @@ export const Fundraiser: React.FC = () => {
           </p>
           <p css={text(theme)}>
             Status:{" "}
-            <span css={statusText(fundraiser.status)}>
+            <span css={statusText(theme, fundraiser.status)}>
               {FundraiserStatusValueToString[fundraiser.status]}
             </span>
           </p>
-          {fundraiser.declineReason && (
-            <p css={text(theme)}>Decline reason: {fundraiser.declineReason}</p>
-          )}
           <p css={text(theme)}>
             Goal: {fundraiser.goal.toString()} Token{fundraiser.goal > 1 && "s"}
           </p>
@@ -136,6 +151,11 @@ export const Fundraiser: React.FC = () => {
             <div></div>
           )}
           <h3 css={infoText(theme)}>{fundraiser.beneficiary}</h3>
+          {fundraiser.status === FundraiserStatusValue.APPROVED ? (
+            <Button className={certificateButton} text="Certificate" onClick={() => setDialogOpen(true)} />
+          ) : (
+            <div></div>
+          )}
           <h3 css={infoText(theme)}>
             {fundraiser.createdAt.toLocaleDateString()}
           </h3>
@@ -148,13 +168,19 @@ export const Fundraiser: React.FC = () => {
           <div css={sectionSelection}>
             <h1
               onClick={() => setSelectedSection(Section.DONATIONS)}
-              css={sectionSelectionText(selectedSection === Section.DONATIONS)}
+              css={sectionSelectionText(
+                theme,
+                selectedSection === Section.DONATIONS
+              )}
             >
               Donations
             </h1>
             <h1
               onClick={() => setSelectedSection(Section.COMMENTS)}
-              css={sectionSelectionText(selectedSection === Section.COMMENTS)}
+              css={sectionSelectionText(
+                theme,
+                selectedSection === Section.COMMENTS
+              )}
             >
               Comments
             </h1>
@@ -228,6 +254,53 @@ export const Fundraiser: React.FC = () => {
           </div>
         </div>
       )}
+      {fundraiser.declineReason && (
+        <div css={declineReasonContainer}>
+          <p css={text(theme)}>Decline reason: {fundraiser.declineReason}</p>
+        </div>
+      )}
+      <Dialog
+        maskAnimation="fade"
+        animation="zoom"
+        closeIcon={<></>}
+        style={dialog}
+        onClose={() => setDialogOpen(false)}
+        visible={dialogOpen}
+      >
+        <div>
+          <FundraiserCertificate
+            isPreview={true}
+            status={fundraiser.status}
+            totalDonations={fundraiser.totalDonations}
+            goal={fundraiser.goal}
+            deadline={fundraiser.deadline}
+            beneficiarAddress={fundraiser.beneficiary}
+            fundraiserAddress={fundraiserAddress}
+            title={fundraiser.title}
+          />
+          <Button
+            className={certificateDownloadButton}
+            text="Download"
+            onClick={() => {
+              getCertificate();
+              setDialogOpen(false);
+            }}
+          />
+        </div>
+      </Dialog>
+      <DocumentContainer>
+        <FundraiserCertificate
+          isPreview={false}
+          status={fundraiser.status}
+          totalDonations={fundraiser.totalDonations}
+          goal={fundraiser.goal}
+          deadline={fundraiser.deadline}
+          beneficiarAddress={fundraiser.beneficiary}
+          fundraiserAddress={fundraiserAddress}
+          ref={certificateRef}
+          title={fundraiser.title}
+        />
+      </DocumentContainer>
     </div>
   );
 };

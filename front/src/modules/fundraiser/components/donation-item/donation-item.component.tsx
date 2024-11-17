@@ -2,6 +2,7 @@ import React from "react";
 import { Address, formatUnits } from "viem";
 import { useShortenString } from "../../../../common/hooks";
 import { container, topContainer } from "./donation-item.styles";
+import { useTheme } from "@emotion/react";
 
 type Properties = {
   comment: string;
@@ -15,9 +16,9 @@ export const DonationItem: React.FC<Properties> = ({
   amount,
 }) => {
   const shortAddress = useShortenString(address);
-
+  const theme = useTheme()
   return (
-    <div css={container}>
+    <div css={container(theme)}>
       <div css={topContainer}>
         <h3>{shortAddress}</h3>
         <h3>{formatUnits(amount, 18)}</h3>

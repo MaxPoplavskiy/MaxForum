@@ -8,6 +8,7 @@ import {
   buttonsContainer,
   container,
   content,
+  statusText,
   textArea,
 } from "./create-benefactor-request.styles";
 import { useCreateBenefactorRequest } from "./hooks/use-create-benefactor-request.hook";
@@ -24,9 +25,14 @@ export const BenefactorRequestCreate: React.FC = () => {
 
   return (
     <div css={container(theme)}>
+      <h1>Benefactor Request</h1>
       {request?.sender === zeroAddress ? (
         <div css={content}>
-          <TextArea css={textArea} onChange={addressChange} />
+          <TextArea
+            css={textArea}
+            placeholder="Request comment"
+            onChange={addressChange}
+          />
           <div css={buttonsContainer}>
             <Button
               onClick={() => sendRequest(comment)}
@@ -38,9 +44,12 @@ export const BenefactorRequestCreate: React.FC = () => {
       ) : (
         <div>
           <h1>Request info:</h1>
-          <h3>
-            Status: {BenefactorRequestStatusValueToString[request?.status ?? 0]}
-          </h3>
+          {request?.status !== undefined && (
+            <h3>
+              Status:{" "}
+              <span css={statusText(theme, request.status)}>{BenefactorRequestStatusValueToString[request?.status ?? 0]}</span>
+            </h3>
+          )}
           <h3>Comment: {request?.comment}</h3>
           {request?.declineReason && (
             <h3>Decline reason: {request.declineReason}</h3>

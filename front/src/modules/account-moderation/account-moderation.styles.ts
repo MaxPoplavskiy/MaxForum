@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 import { spaces } from "../../common/styles";
+import { Theme } from "../../common/types";
 
 export const container = css`
   display: flex;
@@ -10,10 +11,13 @@ export const container = css`
   flex-direction: column;
   width: 100%;
 `;
+export const title = (theme: Theme) => css`
+  color: ${theme.colors.secondary};
+`;
 export const content = css`
   display: flex;
   width: fit-content;
-  width: 500px;
+  width: 600px;
   flex-direction: column;
   gap: ${spaces[3]};
 `;
@@ -26,3 +30,6 @@ export const buttonsContainer = css`
     flex: 1;
   }
 `;
+export const textArea = css`
+  height: 150px;
+`

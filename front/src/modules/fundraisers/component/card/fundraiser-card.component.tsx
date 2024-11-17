@@ -58,7 +58,7 @@ export const FundraiserCard: React.FC<Properties> = ({
         <p css={descriptionStyles(theme)}>{description}</p>
         <p css={descriptionStyles(theme)}>Goal: {goal.toString()}</p>
         <p css={descriptionStyles(theme)}>Deadline: {deadline.toLocaleDateString()}</p>
-        <p css={descriptionStyles(theme)}>Status: <span css={statusText(status)}>{status}</span></p>
+        <p css={descriptionStyles(theme)}>Status: <span css={statusText(theme, status)}>{status}</span></p>
       </div>
       <div css={lowerBody}>
         <div></div>

@@ -7,6 +7,7 @@ export * from "./header";
 export * from "./input";
 export * from "./number-input";
 export * from "./page-wrapper";
+export * from "./pdf";
 export * from "./spacer";
 export * from "./textarea";
 export * from "./wallet-options";

@@ -20,7 +20,9 @@ export class PinataController {
     type: String,
   })
   @UseInterceptors(FileInterceptor('file'))
-  public async uploadFile(@UploadedFile() file: Express.Multer.File): Promise<UploadToIpfsResponse> {
+  public async uploadFile(
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<UploadToIpfsResponse> {
     return this.pinataService.uploadFile({ file });
   }
 }

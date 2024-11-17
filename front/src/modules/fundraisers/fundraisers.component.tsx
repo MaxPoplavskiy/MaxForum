@@ -1,7 +1,7 @@
 import { useTheme } from "@emotion/react";
-import { useMemo, useState } from "react";
+import { ChangeEvent, useMemo, useState } from "react";
 import { useAccount } from "wagmi";
-import { Spacer } from "../../common/components";
+import { Input, Spacer } from "../../common/components";
 import { Dropdown } from "../../common/components/dropdown/dropdown.component";
 import { useAdministrationStatusHook } from "../../common/hooks";
 import {
@@ -10,7 +10,7 @@ import {
   FundraiserStatusValueToString,
 } from "../../common/types/fundraiser-status.type";
 import { FundraiserCard } from "./component/card/fundraiser-card.component";
-import { container, fundraisersContainer, title } from "./fundraisers.styles";
+import { container, filterContainer, fundraisersContainer, nameFilterInput, title } from "./fundraisers.styles";
 import { useReadFundraisers } from "./hooks/use-read-fundraisers.hook";
 
 type Properties = {
@@ -27,10 +27,17 @@ export const Fundraisers: React.FC<Properties> = ({ type = "All" }) => {
     FundraiserStatusFilterValue.ALL
   );
 
+  const [nameFilter, setNameFilter] = useState('');
+
   const { fundraisers } = useReadFundraisers(
     isMineType ? address : undefined,
-    statusFilter
+    statusFilter,
+    nameFilter
   );
+
+  function nameFilterChange(event: ChangeEvent<HTMLInputElement>) {
+    setNameFilter(event.target.value);
+  }
 
   const theme = useTheme();
   const { isAdmin } = useAdministrationStatusHook();
@@ -41,7 +48,8 @@ export const Fundraisers: React.FC<Properties> = ({ type = "All" }) => {
         {isMineType ? "My Fundraisers" : "Fundraisers"}
         <Spacer />
       </h1>
-      <div>
+      <div css={filterContainer}>
+      <Input css={nameFilterInput} onChange={nameFilterChange} placeholder="Name filter" />
         {isAdmin && (
           <Dropdown<FundraiserStatusFilterValue>
             placeholder="Select status"

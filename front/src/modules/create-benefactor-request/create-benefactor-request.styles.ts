@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { spaces } from "../../common/styles";
+import { colors, spaces } from "../../common/styles";
 import { Theme } from "../../common/types";
 
 export const container = (theme: Theme) => css`
@@ -21,7 +21,7 @@ export const content = css`
 `;
 export const textArea = css`
   min-height: 400px;
-`
+`;
 export const buttonsContainer = css`
   display: flex;
   justify-content: center;
@@ -31,3 +31,12 @@ export const buttonsContainer = css`
     flex: 1;
   }
 `;
+export const statusText = (theme: Theme, status: number) => {
+  let color;
+  if (status === 0) color = theme.colors.secondary;
+  else if (status === 1) color = colors.green;
+  else if (status === 2) color = colors.red;
+  return css`
+    color: ${color};
+  `;
+};

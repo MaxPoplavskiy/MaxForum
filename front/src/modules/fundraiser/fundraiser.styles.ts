@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { CSSProperties } from "react";
 import {
   colors,
   JosefinSans,
@@ -41,9 +42,9 @@ export const title = (theme: Theme) => css`
 export const text = (theme: Theme) => css`
   color: ${theme.colors.secondary};
 `;
-export const statusText = (status: FundraiserStatusValue) => {
+export const statusText = (theme: Theme, status: FundraiserStatusValue) => {
   let color;
-  if (status === FundraiserStatusValue.PENDING) color = colors.black;
+  if (status === FundraiserStatusValue.PENDING) color = theme.colors.secondary;
   else if (status === FundraiserStatusValue.APPROVED) color = colors.green;
   else if (status === FundraiserStatusValue.DECLINED) color = colors.red;
   return css`
@@ -59,7 +60,7 @@ export const description = (theme: Theme) => css`
 export const bottomContainer = css`
   display: grid;
   grid-column: span 3;
-  grid-template-columns: auto 12fr 1fr;
+  grid-template-columns: min-content 13fr 1fr 1fr;
   justify-content: space-between;
   align-items: center;
 `;
@@ -84,19 +85,23 @@ export const infoText = (theme: Theme) => css`
   font-size: 1rem;
   margin: 0;
 `;
+export const certificateButton = css`
+  margin: 0 ${spaces[4]};
+`
 export const bottomSpacer = css`
   grid-column: span 3;
 `;
 export const sectionSelectionContainer = css`
-  width: 70%
-`
+  width: 70%;
+`;
 export const sectionSelection = css`
   display: flex;
   justify-content: space-around;
-`
-export const sectionSelectionText = (isSelect: boolean) => css`
+`;
+export const sectionSelectionText = (theme: Theme, isSelect: boolean) => css`
   font-weight: ${isSelect ? weights.bold : weights.light};
-`
+  color: ${theme.colors.secondary};
+`;
 export const bottomDonationContainer = css`
   width: 70%;
 `;
@@ -122,3 +127,18 @@ export const declineModerationContainer = css`
   display: flex;
   gap: ${spaces[2]};
 `;
+export const declineReasonContainer = css`
+  width: 70%;
+  font-size: ${sizes.xxl};
+  p {
+    ${Orbitron}
+  }
+`;
+export const dialog: CSSProperties = {
+  width: `calc(${sizes.a4PreviewWidth} + 100px)`,
+  height: `${sizes.a4PreviewWHeight}`
+};
+export const certificateDownloadButton = css`
+  background-color: ${colors.black} !important;
+  color: ${colors.white};
+`

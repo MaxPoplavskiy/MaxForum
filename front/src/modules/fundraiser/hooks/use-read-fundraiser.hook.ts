@@ -29,7 +29,7 @@ export const useReadFundraiser = (address: Address | undefined): Return => {
   useEffect(() => {
 
     const fetchFundraiser = async () => {
-      if(!address) return
+      if(!address || !data) return
       const [
         status,
         beneficiary,

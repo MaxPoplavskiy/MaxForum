@@ -1,12 +1,15 @@
 import React, { ChangeEvent, useState } from "react";
-import { Button, Input } from "../../common/components";
+import { Button, Input, TextArea } from "../../common/components";
 import { ButtonType } from "../../common/types/button.type";
 import {
   buttonsContainer,
   container,
   content,
+  textArea,
+  title,
 } from "./account-moderation.styles";
 import { useModerateAccount } from "./hooks/use-moderate-account.hook";
+import { useTheme } from "@emotion/react";
 
 export const AccountModeration: React.FC = () => {
   const [address, setAddress] = useState("");
@@ -17,15 +20,19 @@ export const AccountModeration: React.FC = () => {
     setAddress(event.target.value);
   }
 
+  const theme = useTheme()
+
   return (
     <div css={container}>
+      <h1 css={title(theme)}>Account moderation</h1>
       <div css={content}>
-        <Input onChange={addressChange} />
+        <Input placeholder="address" onChange={addressChange} />
+        <TextArea css={textArea} placeholder="Block reason" />
         <div css={buttonsContainer}>
           <Button
             onClick={() => unblock(address)}
             type={ButtonType.APPROVE}
-            text="Unblock"
+            text="Unblock/Remove Benefactor"
           />
           <Button
             onClick={() => {

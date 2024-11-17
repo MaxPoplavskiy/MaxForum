@@ -1,0 +1,1 @@
+export const html2canvasScale = 0.2645

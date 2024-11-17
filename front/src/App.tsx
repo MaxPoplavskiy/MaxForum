@@ -1,6 +1,7 @@
 /// <reference types="vite-plugin-svgr/client" />
 import { ThemeProvider } from "@emotion/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import "rc-dialog/assets/index.css";
 import { BrowserRouter } from "react-router-dom";
 import { WagmiProvider } from "wagmi";
 import {

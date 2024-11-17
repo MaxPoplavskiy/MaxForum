@@ -1,7 +1,16 @@
-import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PinataSDK } from 'pinata-web3';
-import type { GetPinataProps, UploadBody, UploadToIpfsResponse } from './types/pinata.types';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { PinataSDK } from 'pinata-web3';
+import type {
+  GetPinataProps,
+  UploadBody,
+  UploadToIpfsResponse,
+} from './types/pinata.types';
 
 @Injectable()
 export class PinataService {
@@ -10,9 +19,11 @@ export class PinataService {
   private readonly pinataGateway: string;
 
   constructor(private readonly configService: ConfigService) {
-    this.pinataGateway = this.configService.get<string>('PINATA_GATEWAY_DOMAIN');
+    this.pinataGateway = this.configService.get<string>(
+      'PINATA_GATEWAY_DOMAIN',
+    );
     const pinataJwt = this.configService.get<string>('PINATA_API_JWT');
-    
+
     this.pinata = new PinataSDK({
       pinataJwt,
       pinataGateway: this.pinataGateway,
@@ -28,9 +39,9 @@ export class PinataService {
       throw new BadRequestException('File is required.');
     }
     try {
-      const transformedFile = new File([file.buffer,], file.originalname, {
+      const transformedFile = new File([file.buffer], file.originalname, {
         type: file.mimetype,
-      },)
+      });
       const uploadFile = await this.pinata.upload.file(transformedFile);
 
       const pinataAssetURI = await this.pinata.gateways.convert(
@@ -46,11 +57,11 @@ export class PinataService {
       const pinataJsonURI = await this.pinata.upload.json(json);
 
       return {
-        hash: pinataJsonURI.IpfsHash
+        hash: pinataJsonURI.IpfsHash,
       };
     } catch (error) {
       console.log(error);
-      
+
       throw new HttpException(
         'Pinata upload error',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -83,7 +94,7 @@ export class PinataService {
         tokenId,
         ...pinataTokenRes.data,
       };
-    } catch (error) {
+    } catch {
       throw new HttpException(
         'Pinata read error',
         HttpStatus.INTERNAL_SERVER_ERROR,

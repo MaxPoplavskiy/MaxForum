@@ -1,4 +1,4 @@
-import { useTheme } from "@emotion/react";
+import { SerializedStyles, useTheme } from "@emotion/react";
 import React, { useMemo } from "react";
 import { ButtonType } from "../../types/button.type";
 import {
@@ -13,12 +13,14 @@ type Properties = {
   text: string;
   onClick?: () => void;
   leftIcon?: JSX.Element;
+  className?: SerializedStyles;
 };
 export const Button: React.FC<Properties> = ({
   type = ButtonType.FILLED,
   text,
   onClick,
   leftIcon,
+  className
 }) => {
   const theme = useTheme();
 
@@ -29,7 +31,7 @@ export const Button: React.FC<Properties> = ({
   }, [type, theme]);
 
   return (
-    <button onClick={onClick} css={[button(theme), typeStyles]}>
+    <button onClick={onClick} css={[button(theme), typeStyles, className]}>
       {leftIcon ?? <div></div>}
       {text}
     </button>

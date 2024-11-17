@@ -30,8 +30,9 @@ export const BenefactorRequestModeration: React.FC = () => {
           <h3>
             Status: {BenefactorRequestStatusValueToString[request?.status ?? 0]}
           </h3>
-          <h3>Sender address: {request?.status}</h3>
-          <h3>Comment: {request?.comment}</h3>
+          <h3>Sender address: <span>{request?.sender}</span></h3>
+          <h3>Comment:</h3>
+          <p>{request?.comment}</p>
           {request?.declineReason && (
             <h3>Decline reason: {request.declineReason}</h3>
           )}

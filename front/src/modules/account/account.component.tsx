@@ -51,7 +51,7 @@ export const Account: React.FC = () => {
                 />
               </>
             )}
-            {userStatus === UserStatus.ACTIVE && (
+            {userStatus === UserStatus.ACTIVE && !isAdmin && (
               <Button
                 text="Become Benefactor"
                 onClick={() => navigate(RouterKey.BENEFACTOR_REQUEST)}
